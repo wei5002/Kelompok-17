@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class HospitalManagementSystem {
 
     private static final int R = 256; // extended ASCII
-    private static final int MAX_FLOORS_MENTAL = 6;
+    private static final int MAX_FLOORS_MENTAL = 3;
+    private static final int MAX_FLOORS_LABOR = 5;
 
     private class TrieNode {
         boolean isOccupied;
@@ -26,9 +27,9 @@ public class HospitalManagementSystem {
             root = new TrieNode();
         }
 
-        public void admitPatient(String room, String patientName, boolean limitFloors) {
-            if (limitFloors && !isValidFloor(room)) {
-                System.out.println("Invalid floor. The Mental building has a limit of " + MAX_FLOORS_MENTAL + " floors.");
+        public void admitPatient(String room, String patientName, boolean limitFloors, int maxFloors) {
+            if (limitFloors && !isValidFloor(room, maxFloors)) {
+                System.out.println("Invalid floor. The building has a limit of " + maxFloors + " floors.");
                 return;
             }
 
@@ -49,9 +50,9 @@ public class HospitalManagementSystem {
             }
         }
 
-        public void dischargePatient(String room, boolean limitFloors) {
-            if (limitFloors && !isValidFloor(room)) {
-                System.out.println("Invalid floor. The Mental building has a limit of " + MAX_FLOORS_MENTAL + " floors.");
+        public void dischargePatient(String room, boolean limitFloors, int maxFloors) {
+            if (limitFloors && !isValidFloor(room, maxFloors)) {
+                System.out.println("Invalid floor. The building has a limit of " + maxFloors + " floors.");
                 return;
             }
 
@@ -131,10 +132,15 @@ public class HospitalManagementSystem {
             }
         }
 
-        private boolean isValidFloor(String room) {
+        private boolean isValidFloor(String room, int maxFloors) {
             if (room == null || room.isEmpty()) return false;
-            char floorChar = room.charAt(0);
-            return Character.isDigit(floorChar) && (floorChar - '0') <= MAX_FLOORS_MENTAL;
+            int floorNumber = 0;
+            int i = 0;
+            while (i < room.length() && Character.isDigit(room.charAt(i))) {
+                floorNumber = floorNumber * 10 + (room.charAt(i) - '0');
+                i++;
+            }
+            return floorNumber > 0 && floorNumber <= maxFloors;
         }
     }
 
@@ -151,7 +157,7 @@ public class HospitalManagementSystem {
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
         switch (building) {
             case "General":
-                generalSicknessBuilding.admitPatient(room, patientName, false);
+                generalSicknessBuilding.admitPatient(room, patientName, false, 0);
                 break;
             case "Mental":
                 System.out.print("Is the patient hallucinating? (yes/no): ");
@@ -169,10 +175,10 @@ public class HospitalManagementSystem {
                     room = "1" + room.substring(1); // Admitting to 1st floor
                 }
                 
-                mentalInstituteBuilding.admitPatient(room, patientName, true);
+                mentalInstituteBuilding.admitPatient(room, patientName, true, MAX_FLOORS_MENTAL);
                 break;
             case "Labor":
-                laborHospitalBuilding.admitPatient(room, patientName, false);
+                laborHospitalBuilding.admitPatient(room, patientName, true, MAX_FLOORS_LABOR);
                 break;
             default:
                 System.out.println("Invalid building.");
@@ -182,13 +188,13 @@ public class HospitalManagementSystem {
     public void dischargePatient(String building, String room) {
         switch (building) {
             case "General":
-                generalSicknessBuilding.dischargePatient(room, false);
+                generalSicknessBuilding.dischargePatient(room, false, 0);
                 break;
             case "Mental":
-                mentalInstituteBuilding.dischargePatient(room, true);
+                mentalInstituteBuilding.dischargePatient(room, true, MAX_FLOORS_MENTAL);
                 break;
             case "Labor":
-                laborHospitalBuilding.dischargePatient(room, false);
+                laborHospitalBuilding.dischargePatient(room, true, MAX_FLOORS_LABOR);
                 break;
             default:
                 System.out.println("Invalid building.");
@@ -243,10 +249,10 @@ public class HospitalManagementSystem {
             if (choice == 5) {
                 break;
             }
-//test
+
             switch (choice) {
                 case 1:
-                    System.out.print("Masukkan nama pasien: ");
+                    System.out.print("Enter patient name: ");
                     String patientName = scanner.nextLine();
                     System.out.print("Enter building (General, Mental, Labor): ");
                     String building = scanner.nextLine();
@@ -254,10 +260,9 @@ public class HospitalManagementSystem {
                     if (building.equalsIgnoreCase("Mental")) {
                         hospital.printBuilding(building);
                         System.out.print("\n1st floor for normal mentally ill patient");
-                        System.out.print("\n2st floor for Middle level mentally ill patient");
-                        System.out.print("\n3st floor for Maximum level security mentally ill patient");
-                        System.out.print("\nEnter room number (it will be reassign based on the patients condition): ");
-                        room = scanner.nextLine();
+                        System.out.print("\n2nd floor for middle level mentally ill patient");
+                        System.out.print("\n3rd floor for maximum level security mentally ill patient");
+                        System.out.print("\nEnter room number (it will be reassigned based on the patient's condition): ");
                     }
                     System.out.print("Enter room number: ");
                     room = scanner.nextLine();
