@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class HospitalManagementSystem {
 
     private static final int R = 256; // extended ASCII
-    private static final int MAX_FLOORS_MENTAL = 3;
+    private static final int MAX_FLOORS_MENTAL = 4;
     private static final int MAX_FLOORS_LABOR = 5;
 
     private class TrieNode {
@@ -175,7 +175,7 @@ public class HospitalManagementSystem {
                     room = "1" + room.substring(1); // Admitting to 1st floor
                 }
                 
-                mentalInstituteBuilding.admitPatient(room, patientName, true, MAX_FLOORS_MENTAL);
+                mentalInstituteBuilding.admitPatient(room, patientName, false, MAX_FLOORS_MENTAL);
                 break;
             case "Labor":
                 laborHospitalBuilding.admitPatient(room, patientName, true, MAX_FLOORS_LABOR);
@@ -245,8 +245,7 @@ public class HospitalManagementSystem {
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();  // Consume newline
-
-            if (choice == 5) {
+ if (choice == 5) {
                 break;
             }
 
@@ -259,13 +258,15 @@ public class HospitalManagementSystem {
                     String room = "";
                     if (building.equalsIgnoreCase("Mental")) {
                         hospital.printBuilding(building);
-                        System.out.print("\n1st floor for normal mentally ill patient");
-                        System.out.print("\n2nd floor for middle level mentally ill patient");
-                        System.out.print("\n3rd floor for maximum level security mentally ill patient");
-                        System.out.print("\nEnter room number (it will be reassigned based on the patient's condition): ");
+                        System.out.println("\n1st floor for normal mentally ill patients");
+                        System.out.println("2nd floor for Middle-level mentally ill patients");
+                        System.out.println("3rd floor for Maximum level security mentally ill patients");
+                        System.out.print("Enter room number (it will be reassigned based on the patient's condition): ");
+                        room = scanner.nextLine();
+                    } else {
+                        System.out.print("Enter room number: ");
+                        room = scanner.nextLine();
                     }
-                    System.out.print("Enter room number: ");
-                    room = scanner.nextLine();
                     hospital.admitPatient(building, room, patientName, scanner);
                     break;
                 case 2:
