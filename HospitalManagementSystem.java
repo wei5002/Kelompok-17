@@ -243,7 +243,7 @@ public class HospitalManagementSystem {
             if (choice == 5) {
                 break;
             }
-
+//test
             switch (choice) {
                 case 1:
                     System.out.print("Masukkan nama pasien: ");
