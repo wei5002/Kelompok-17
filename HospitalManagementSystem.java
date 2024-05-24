@@ -246,7 +246,7 @@ public class HospitalManagementSystem {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter patient name: ");
+                    System.out.print("Masukkan nama pasien: ");
                     String patientName = scanner.nextLine();
                     System.out.print("Enter building (General, Mental, Labor): ");
                     String building = scanner.nextLine();
