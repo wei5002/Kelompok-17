@@ -9,7 +9,7 @@ Program untuk membuat penempatan kamar di rumah sakit dan rincian harganya
 
 ❌ Tambahin limit ruangan ke Mental , labor, kardiologi, THT, dan orthopedi
 
-❌ Tambahin trie Kardiologi ke program
+✔️ Tambahin trie Kardiologi ke program
 
 ✔️ Tambahin trie THT ke program
 
