@@ -11,8 +11,8 @@ Program untuk membuat penempatan kamar di rumah sakit dan rincian harganya
 
 ❌ Tambahin trie Kardiologi ke program
 
-❌ Tambahin trie THT ke program
+✔️ Tambahin trie THT ke program
 
-❌ Tambahin trie Orthopedi ke program
+✔️ Tambahin trie Orthopedi ke program
 
 ❌ Tambahin harga per divisi
