@@ -170,6 +170,21 @@ public class HospitalManagementSystem {
                 thtBuilding.admitPatient(room, patientName, false, 0); // New addition
                 break;
             case "Mental":
+                System.out.print("Is the patient hallucinating? (yes/no): ");
+                String hallucinate = scanner.nextLine().trim().toLowerCase();
+                System.out.print("Does the patient like to hurt themselves? (yes/no): ");
+                String selfHarm = scanner.nextLine().trim().toLowerCase();
+
+                if (hallucinate.equals("yes") && selfHarm.equals("yes")) {
+                    room = "3" + room.substring(1); // Admitting to 3rd floor
+                } else if (hallucinate.equals("yes")) {
+                    room = "2" + room.substring(1); // Admitting to 2nd floor
+                } else if (selfHarm.equals("yes")) {
+                    room = "3" + room.substring(1); // Admitting to 3rd floor
+                } else {
+                    room = "1" + room.substring(1); // Admitting to 1st floor
+                }
+
                 mentalInstituteBuilding.admitPatient(room, patientName, false, MAX_FLOORS_MENTAL);
                 break;
             case "Labor":
