@@ -144,20 +144,20 @@ public class HospitalManagementSystem {
         }
     }
 
-    private HospitalTrie generalSicknessBuilding;
+    private HospitalTrie cardiologyBuilding;
     private HospitalTrie mentalInstituteBuilding;
     private HospitalTrie laborHospitalBuilding;
 
     public HospitalManagementSystem() {
-        generalSicknessBuilding = new HospitalTrie();
+        cardiologyBuilding = new HospitalTrie();
         mentalInstituteBuilding = new HospitalTrie();
         laborHospitalBuilding = new HospitalTrie();
     }
 
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
         switch (building) {
-            case "General":
-                generalSicknessBuilding.admitPatient(room, patientName, false, 0);
+            case "Cardiology":
+                cardiologyBuilding.admitPatient(room, patientName, false, 0);
                 break;
             case "Mental":
                 System.out.print("Is the patient hallucinating? (yes/no): ");
@@ -187,8 +187,8 @@ public class HospitalManagementSystem {
 
     public void dischargePatient(String building, String room) {
         switch (building) {
-            case "General":
-                generalSicknessBuilding.dischargePatient(room, false, 0);
+            case "Cardiology":
+                cardiologyBuilding.dischargePatient(room, false, 0);
                 break;
             case "Mental":
                 mentalInstituteBuilding.dischargePatient(room, true, MAX_FLOORS_MENTAL);
@@ -203,8 +203,8 @@ public class HospitalManagementSystem {
 
     public boolean isOccupied(String building, String room) {
         switch (building) {
-            case "General":
-                return generalSicknessBuilding.isOccupied(room);
+            case "Cardiology":
+                return cardiologyBuilding.isOccupied(room);
             case "Mental":
                 return mentalInstituteBuilding.isOccupied(room);
             case "Labor":
@@ -217,8 +217,8 @@ public class HospitalManagementSystem {
 
     public void printBuilding(String building) {
         switch (building) {
-            case "General":
-                generalSicknessBuilding.print();
+            case "Cardiology":
+                cardiologyBuilding.print();
                 break;
             case "Mental":
                 mentalInstituteBuilding.print();
@@ -253,7 +253,7 @@ public class HospitalManagementSystem {
                 case 1:
                     System.out.print("Enter patient name: ");
                     String patientName = scanner.nextLine();
-                    System.out.print("Enter building (General, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
                     String building = scanner.nextLine();
                     String room = "";
                     if (building.equalsIgnoreCase("Mental")) {
@@ -272,20 +272,20 @@ public class HospitalManagementSystem {
                 case 2:
                     System.out.print("Enter room number: ");
                     room = scanner.nextLine();
-                    System.out.print("Enter building (General, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
                     String building2 = scanner.nextLine();
                     hospital.dischargePatient(building2, room);
                     break;
                 case 3:
                     System.out.print("Enter room number: ");
                     room = scanner.nextLine();
-                    System.out.print("Enter building (General, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
                     String building3 = scanner.nextLine();
                     boolean isOccupied = hospital.isOccupied(building3, room);
                     System.out.println("Room " + room + " in " + building3 + " building is " + (isOccupied ? "occupied." : "empty."));
                     break;
                 case 4:
-                    System.out.print("Enter building (General, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
                     String building4 = scanner.nextLine();
                     hospital.printBuilding(building4);
                     break;
