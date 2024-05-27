@@ -147,11 +147,15 @@ public class HospitalManagementSystem {
     private HospitalTrie cardiologyBuilding;
     private HospitalTrie mentalInstituteBuilding;
     private HospitalTrie laborHospitalBuilding;
+    private HospitalTrie thtBuilding;
+    private HospitalTrie orthopedicBuilding; 
 
     public HospitalManagementSystem() {
         cardiologyBuilding = new HospitalTrie();
         mentalInstituteBuilding = new HospitalTrie();
         laborHospitalBuilding = new HospitalTrie();
+        thtBuilding = new HospitalTrie();
+        orthopedicBuilding = new HospitalTrie(); 
     }
 
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
@@ -159,22 +163,13 @@ public class HospitalManagementSystem {
             case "Cardiology":
                 cardiologyBuilding.admitPatient(room, patientName, false, 0);
                 break;
+            case "Orthopedic":
+                orthopedicBuilding.admitPatient(room, patientName, false, 0); // New addition
+                break;
+            case "THT":
+                thtBuilding.admitPatient(room, patientName, false, 0); // New addition
+                break;
             case "Mental":
-                System.out.print("Is the patient hallucinating? (yes/no): ");
-                String hallucinate = scanner.nextLine().trim().toLowerCase();
-                System.out.print("Does the patient like to hurt themselves? (yes/no): ");
-                String selfHarm = scanner.nextLine().trim().toLowerCase();
-                
-                if (hallucinate.equals("yes") && selfHarm.equals("yes")) {
-                    room = "3" + room.substring(1); // Admitting to 3rd floor
-                } else if (hallucinate.equals("yes")) {
-                    room = "2" + room.substring(1); // Admitting to 2nd floor
-                } else if (selfHarm.equals("yes")) {
-                    room = "3" + room.substring(1); // Admitting to 3rd floor
-                } else {
-                    room = "1" + room.substring(1); // Admitting to 1st floor
-                }
-                
                 mentalInstituteBuilding.admitPatient(room, patientName, false, MAX_FLOORS_MENTAL);
                 break;
             case "Labor":
@@ -189,6 +184,12 @@ public class HospitalManagementSystem {
         switch (building) {
             case "Cardiology":
                 cardiologyBuilding.dischargePatient(room, false, 0);
+                break;
+            case "THT":
+                thtBuilding.dischargePatient(room, false, 0); 
+                break;
+            case "Orthopedic":
+                orthopedicBuilding.dischargePatient(room, false, 0); 
                 break;
             case "Mental":
                 mentalInstituteBuilding.dischargePatient(room, true, MAX_FLOORS_MENTAL);
@@ -205,6 +206,10 @@ public class HospitalManagementSystem {
         switch (building) {
             case "Cardiology":
                 return cardiologyBuilding.isOccupied(room);
+            case "THT":
+                return thtBuilding.isOccupied(room); 
+            case "Orthopedic":
+                return orthopedicBuilding.isOccupied(room); 
             case "Mental":
                 return mentalInstituteBuilding.isOccupied(room);
             case "Labor":
@@ -219,6 +224,12 @@ public class HospitalManagementSystem {
         switch (building) {
             case "Cardiology":
                 cardiologyBuilding.print();
+                break;
+            case "THT":
+                thtBuilding.print(); // New addition
+                break;
+            case "Orthopedic":
+                orthopedicBuilding.print();
                 break;
             case "Mental":
                 mentalInstituteBuilding.print();
@@ -245,15 +256,14 @@ public class HospitalManagementSystem {
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();  // Consume newline
- if (choice == 5) {
+            if (choice == 5) {
                 break;
             }
-
             switch (choice) {
                 case 1:
                     System.out.print("Enter patient name: ");
                     String patientName = scanner.nextLine();
-                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Orthopedic, THT, Mental, Labor): ");
                     String building = scanner.nextLine();
                     String room = "";
                     if (building.equalsIgnoreCase("Mental")) {
@@ -272,20 +282,20 @@ public class HospitalManagementSystem {
                 case 2:
                     System.out.print("Enter room number: ");
                     room = scanner.nextLine();
-                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Orthopedic, THT, Mental, Labor): ");
                     String building2 = scanner.nextLine();
                     hospital.dischargePatient(building2, room);
                     break;
                 case 3:
                     System.out.print("Enter room number: ");
                     room = scanner.nextLine();
-                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Orthopedic, THT, Mental, Labor): ");
                     String building3 = scanner.nextLine();
                     boolean isOccupied = hospital.isOccupied(building3, room);
                     System.out.println("Room " + room + " in " + building3 + " building is " + (isOccupied ? "occupied." : "empty."));
                     break;
                 case 4:
-                    System.out.print("Enter building (Cardiology, Mental, Labor): ");
+                    System.out.print("Enter building (Cardiology, Orthopedic, THT, Mental, Labor): ");
                     String building4 = scanner.nextLine();
                     hospital.printBuilding(building4);
                     break;
