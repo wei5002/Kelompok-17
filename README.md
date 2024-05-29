@@ -13,6 +13,10 @@ Program untuk membuat penempatan kamar di rumah sakit dan rincian harganya
 
 ✔️ Tambahin trie Orthopedi ke program
 
+✔️ Logic tree kardiologi THT Orthopedi sudah di masukan
+
+✔️ Sudah bisa display semua trie
+
 ❌ Tambahin limit ruangan ke Mental , labor, kardiologi, THT, dan orthopedi
 
 ❌ Tambahin harga per divisi
