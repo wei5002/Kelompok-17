@@ -161,13 +161,13 @@ public class HospitalManagementSystem {
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
         switch (building) {
             case "Cardiology":
-            System.out.println("Room types for Cardiology building:");
-            System.out.println("1. ICU");
-            System.out.println("2. BPJS");
-            System.out.println("3. Normal");
-            System.out.println("4. VIP");
-            System.out.println("5. VVIP");
-            System.out.print("Choose room type (1-5): ");
+            System.out.println("Jenis Ruangan pada Gedung Cardiology(Jantung):");
+            System.out.println("1. ICU      = Rp 2.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 1.500.000,00");
+            System.out.println("4. VIP      = Rp 15.000.000,00");
+            System.out.println("5. VVIP     = Rp 20.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
             int roomTypeCardio = scanner.nextInt();
             scanner.nextLine();  // Consume newline
 
@@ -194,13 +194,13 @@ public class HospitalManagementSystem {
                 cardiologyBuilding.admitPatient(room, patientName, false, 0);
                 break;
             case "Orthopedic":
-            System.out.println("Room types for Orthopedic building:");
-            System.out.println("1. ICU");
-            System.out.println("2. BPJS");
-            System.out.println("3. Normal");
-            System.out.println("4. VIP");
-            System.out.println("5. VVIP");
-            System.out.print("Choose room type (1-5): ");
+            System.out.println("Jenis Ruangan pada Gedung Orthopedic(Tulang):");
+            System.out.println("1. ICU      = Rp 2.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 1.500.000,00");
+            System.out.println("4. VIP      = Rp 15.000.000,00");
+            System.out.println("5. VVIP     = Rp 20.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
             int roomTypeOrtho = scanner.nextInt();
             scanner.nextLine();  // Consume newline
 
@@ -227,13 +227,13 @@ public class HospitalManagementSystem {
                 orthopedicBuilding.admitPatient(room, patientName, false, 0); // New addition
                 break;
             case "THT":
-            System.out.println("Room types for THT building:");
-            System.out.println("1. ICU");
-            System.out.println("2. BPJS");
-            System.out.println("3. Normal");
-            System.out.println("4. VIP");
-            System.out.println("5. VVIP");
-            System.out.print("Choose room type (1-5): ");
+            System.out.println("Jenis Ruangan pada Gedung THT: ");
+            System.out.println("1. ICU      = Rp 2.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 1.500.000,00");
+            System.out.println("4. VIP      = Rp 15.000.000,00");
+            System.out.println("5. VVIP     = Rp 20.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
             int roomTypeTHT = scanner.nextInt();
             scanner.nextLine();  // Consume newline
 
@@ -261,31 +261,32 @@ public class HospitalManagementSystem {
             thtBuilding.admitPatient(room, patientName, false, 0); // No floor limit for THT
             break;
             case "Mental":
-                System.out.print("Is the patient hallucinating? (yes/no): ");
+                System.out.print("Apakah pasien mengalami Halusinasi? (ya/tidak): ");
                 String hallucinate = scanner.nextLine().trim().toLowerCase();
                 System.out.print("Does the patient like to hurt themselves? (yes/no): ");
                 String selfHarm = scanner.nextLine().trim().toLowerCase();
 
-                if (hallucinate.equals("yes") && selfHarm.equals("yes")) {
-                    room = "3" + room.substring(1); // Admitting to 3rd floor
-                } else if (hallucinate.equals("yes")) {
-                    room = "2" + room.substring(1); // Admitting to 2nd floor
-                } else if (selfHarm.equals("yes")) {
-                    room = "3" + room.substring(1); // Admitting to 3rd floor
+                if (hallucinate.equals("ya") && selfHarm.equals("ya")) {
+                    room = "3 " + room.substring(1); // Admitting to 3rd floor
+                } else if (hallucinate.equals("ya")) {
+                    room = "2 " + room.substring(1); // Admitting to 2nd floor
+                } else if (selfHarm.equals("ya")) {
+                    room = "3 " + room.substring(1); // Admitting to 3rd floor
                 } else {
                     room = "1" + room.substring(1); // Admitting to 1st floor
                 }
 
                 mentalInstituteBuilding.admitPatient(room, patientName, false, MAX_FLOORS_MENTAL);
                 break;
+
             case "Labor":
-            System.out.println("Room types for Labor building:");
-            System.out.println("1. ICU");
-            System.out.println("2. BPJS");
-            System.out.println("3. Normal");
-            System.out.println("4. VIP");
-            System.out.println("5. VVIP");
-            System.out.print("Choose room type (1-5): ");
+            System.out.println("Jenis Ruangan pada Gedung Labor (Kandungan): ");
+            System.out.println("1. ICU      = Rp 4.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 5.000.000,00");
+            System.out.println("4. VIP      = Rp 20.000.000,00");
+            System.out.println("5. VVIP     = Rp 25.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
             int roomTypeLabor = scanner.nextInt();
             scanner.nextLine();  // Consume newline
 
