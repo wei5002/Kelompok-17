@@ -2,12 +2,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * trie untuk sistem rumah sakit 
+ * 
+ * Metode metodenya ada:
+ * - Mendaftar pasien ke dalam suatu kamar berdasarkan jenisnya
+ * - Mengubah ruangan ke ruangan yang benar
+ * - mengeluarkan pasien jika sudah sembuh
+ * - mengecheck ruangan apakah kosong atau tidak
+ * - mencetak list ruangan setiap divisi
+ * 
+ */
+
 public class HospitalManagementSystem {
 
     private static final int R = 256; // extended ASCII
     private static final int MAX_FLOORS_MENTAL = 4;
     private static final int MAX_FLOORS_LABOR = 5;
 
+    //deklarasi node trienya
     private class TrieNode {
         boolean isOccupied;
         String patientName;
@@ -27,6 +40,12 @@ public class HospitalManagementSystem {
             root = new TrieNode();
         }
 
+        /*
+         * Metode ini digunakan untuk memasukkan pasien ke sebuah ruangan di rumah sakit
+         * Metode ini membutuhkan nama gedung, nomor kamar, nama pasien, dan objek Pemindai sebagai masukan. 
+         * Pertama-tama, metode ini memeriksa nama gedung dan nomor kamar untuk menentukan tipe dan lantai kamar. 
+         * Kemudian, metode ini menambahkan pasien ke struktur data Trie dan memperbarui status hunian kamar.
+         */
         public void admitPatient(String building, String room, String patientName, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
             if (limitFloors && !isValidFloor(room, maxFloors)) {
@@ -51,6 +70,12 @@ public class HospitalManagementSystem {
             }
         }
 
+        /**
+         * Metode ini digunakan untuk mengeluarkan pasien dari sebuah ruangan di rumah sakit. 
+         * Metode ini membutuhkan nama gedung dan nomor kamar sebagai masukan.
+         * Pertama-tama, metode ini memeriksa nama gedung dan nomor kamar untuk menentukan tipe dan lantai kamar.
+         * Kemudian, metode ini menghapus pasien dari struktur data Trie dan memperbarui status hunian kamar.
+         */
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
             if (limitFloors && !isValidFloor(room, maxFloors)) {
@@ -76,6 +101,11 @@ public class HospitalManagementSystem {
             }
         }
 
+        /*
+         * Metode ini digunakan untuk memeriksa apakah sebuah ruangan ditempati atau tidak. 
+         * Metode ini mengambil nama gedung dan nomor kamar sebagai input dan 
+         * mengembalikan nilai boolean yang menunjukkan apakah kamar tersebut terisi atau tidak.
+         */
         public boolean isOccupied(String building, String room) {
             String fullRoom = building + room;
             TrieNode current = root;
@@ -89,6 +119,8 @@ public class HospitalManagementSystem {
             return current.isOccupied;
         }
 
+
+        //mengelist ruangan yang ditempati pasien
         public List<String> listOccupiedRooms() {
             List<String> list = new ArrayList<>();
             listRooms(root, "", list);
@@ -107,6 +139,10 @@ public class HospitalManagementSystem {
             }
         }
 
+        /*
+         * Fungsi ini digunakan untuk mencetak struktur data Trie dalam format yang dapat dibaca manusia.
+         * Metode ini mengambil simpul akar dari Trie dan tingkat lekukan sebagai masukan dan mencetak struktur data Trie dalam format seperti pohon.
+         */
         public void print() {
             print("", root, 0, true, true);
         }
@@ -153,6 +189,9 @@ public class HospitalManagementSystem {
         hospitalTrie = new HospitalTrie();
     }
 
+    /*
+     * memanggil fungsi admitPatient
+     */
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
         switch (building) {
             case "THT":
