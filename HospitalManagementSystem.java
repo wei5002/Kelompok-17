@@ -155,6 +155,7 @@ public class HospitalManagementSystem {
 
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
         switch (building) {
+<<<<<<< HEAD
             case "THT":
                 hospitalTrie.admitPatient("T", room, patientName, false, 0);
                 break;
@@ -164,11 +165,114 @@ public class HospitalManagementSystem {
             case "Orthopedi":
                 hospitalTrie.admitPatient("O", room, patientName, false, 0);
                 break;
+=======
+            case "Cardiology":
+            System.out.println("Jenis Ruangan pada Gedung Cardiology(Jantung):");
+            System.out.println("1. ICU      = Rp 2.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 1.500.000,00");
+            System.out.println("4. VIP      = Rp 15.000.000,00");
+            System.out.println("5. VVIP     = Rp 20.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
+            int roomTypeCardio = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (roomTypeCardio) {
+                case 1:
+                    room = "1" + room.substring(1); // ICU on the 1st floor
+                    break;
+                case 2:
+                    room = "2" + room.substring(1); // BPJS on the 2nd floor
+                    break;
+                case 3:
+                    room = "3" + room.substring(1); // Normal on the 3rd floor
+                    break;
+                case 4:
+                    room = "4" + room.substring(1); // VIP on the 4th floor
+                    break;
+                case 5:
+                    room = "5" + room.substring(1); // VVIP on the 5th floor
+                    break;
+                default:
+                    System.out.println("Invalid room type.");
+                    return;
+            }
+                cardiologyBuilding.admitPatient(room, patientName, false, 0);
+                break;
+            case "Orthopedic":
+            System.out.println("Jenis Ruangan pada Gedung Orthopedic(Tulang):");
+            System.out.println("1. ICU      = Rp 2.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 1.500.000,00");
+            System.out.println("4. VIP      = Rp 15.000.000,00");
+            System.out.println("5. VVIP     = Rp 20.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
+            int roomTypeOrtho = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (roomTypeOrtho) {
+                case 1:
+                    room = "1" + room.substring(1); // ICU on the 1st floor
+                    break;
+                case 2:
+                    room = "2" + room.substring(1); // BPJS on the 2nd floor
+                    break;
+                case 3:
+                    room = "3" + room.substring(1); // Normal on the 3rd floor
+                    break;
+                case 4:
+                    room = "4" + room.substring(1); // VIP on the 4th floor
+                    break;
+                case 5:
+                    room = "5" + room.substring(1); // VVIP on the 5th floor
+                    break;
+                default:
+                    System.out.println("Invalid room type.");
+                    return;
+            }
+                orthopedicBuilding.admitPatient(room, patientName, false, 0); // New addition
+                break;
+            case "THT":
+            System.out.println("Jenis Ruangan pada Gedung THT: ");
+            System.out.println("1. ICU      = Rp 2.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 1.500.000,00");
+            System.out.println("4. VIP      = Rp 15.000.000,00");
+            System.out.println("5. VVIP     = Rp 20.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
+            int roomTypeTHT = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (roomTypeTHT) {
+                case 1:
+                    room = "1" + room.substring(1); // ICU on the 1st floor
+                    break;
+                case 2:
+                    room = "2" + room.substring(1); // BPJS on the 2nd floor
+                    break;
+                case 3:
+                    room = "3" + room.substring(1); // Normal on the 3rd floor
+                    break;
+                case 4:
+                    room = "4" + room.substring(1); // VIP on the 4th floor
+                    break;
+                case 5:
+                    room = "5" + room.substring(1); // VVIP on the 5th floor
+                    break;
+                default:
+                    System.out.println("Invalid room type.");
+                    return;
+            }
+
+            thtBuilding.admitPatient(room, patientName, false, 0); // No floor limit for THT
+            break;
+>>>>>>> 0f1981f3e1a23c81e9750003ff9091c7020cc302
             case "Mental":
-                System.out.print("Is the patient hallucinating? (yes/no): ");
+                System.out.print("Apakah pasien mengalami Halusinasi? (ya/tidak): ");
                 String hallucinate = scanner.nextLine().trim().toLowerCase();
                 System.out.print("Does the patient like to hurt themselves? (yes/no): ");
                 String selfHarm = scanner.nextLine().trim().toLowerCase();
+<<<<<<< HEAD
                 
                 if (hallucinate.equals("yes") && selfHarm.equals("yes")) {
                     room = "3" + room.substring(1); // Admitting to 3rd floor
@@ -176,14 +280,58 @@ public class HospitalManagementSystem {
                     room = "2" + room.substring(1); // Admitting to 2nd floor
                 } else if (selfHarm.equals("yes")) {
                     room = "3" + room.substring(1); // Admitting to 3rd floor
+=======
+
+                if (hallucinate.equals("ya") && selfHarm.equals("ya")) {
+                    room = "3 " + room.substring(1); // Admitting to 3rd floor
+                } else if (hallucinate.equals("ya")) {
+                    room = "2 " + room.substring(1); // Admitting to 2nd floor
+                } else if (selfHarm.equals("ya")) {
+                    room = "3 " + room.substring(1); // Admitting to 3rd floor
+>>>>>>> 0f1981f3e1a23c81e9750003ff9091c7020cc302
                 } else {
                     room = "1" + room.substring(1); // Admitting to 1st floor
                 }
                 
                 hospitalTrie.admitPatient("M", room, patientName, false, MAX_FLOORS_MENTAL);
                 break;
+
             case "Labor":
+<<<<<<< HEAD
                 hospitalTrie.admitPatient("L", room, patientName, true, MAX_FLOORS_LABOR);
+=======
+            System.out.println("Jenis Ruangan pada Gedung Labor (Kandungan): ");
+            System.out.println("1. ICU      = Rp 4.000.000,00");
+            System.out.println("2. BPJS     = Rp 0");
+            System.out.println("3. Normal   = Rp 5.000.000,00");
+            System.out.println("4. VIP      = Rp 20.000.000,00");
+            System.out.println("5. VVIP     = Rp 25.000.000,00");
+            System.out.print("Silahkan Memilih Jenis Ruangan (1-5): ");
+            int roomTypeLabor = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (roomTypeLabor) {
+                case 1:
+                    room = "1" + room.substring(1); // ICU on the 1st floor
+                    break;
+                case 2:
+                    room = "2" + room.substring(1); // BPJS on the 2nd floor
+                    break;
+                case 3:
+                    room = "3" + room.substring(1); // Normal on the 3rd floor
+                    break;
+                case 4:
+                    room = "4" + room.substring(1); // VIP on the 4th floor
+                    break;
+                case 5:
+                    room = "5" + room.substring(1); // VVIP on the 5th floor
+                    break;
+                default:
+                    System.out.println("Invalid room type.");
+                    return;
+            }
+                laborHospitalBuilding.admitPatient(room, patientName, false, MAX_FLOORS_LABOR);
+>>>>>>> 0f1981f3e1a23c81e9750003ff9091c7020cc302
                 break;
             default:
                 System.out.println("Invalid building.");
