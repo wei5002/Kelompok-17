@@ -157,151 +157,66 @@ public class HospitalManagementSystem {
         int roomType = -1;
         boolean validInput = false;
 
+        System.out.println("Room types for " + building + " building:");
+        System.out.println("1. ICU");
+        System.out.println("2. BPJS");
+        System.out.println("3. Normal");
+        System.out.println("4. VIP");
+        System.out.println("5. VVIP");
+        while (!validInput) {
+            System.out.print("Choose room type (1-5): ");
+            if (scanner.hasNextInt()) {
+                roomType = scanner.nextInt();
+                if (roomType >= 1 && roomType <= 5) {
+                    validInput = true;
+                } else {
+                    System.out.println("Invalid room type. Please enter a number between 1 and 5.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();  // Consume invalid input
+            }
+        }
+        scanner.nextLine();  // Consume newline
+        System.out.print("Enter room number: ");
+        room = scanner.nextLine();
+        switch (roomType) {
+            case 1:
+                room = "1" + room.substring(1); // ICU on the 1st floor
+                break;
+            case 2:
+                room = "2" + room.substring(1); // BPJS on the 2nd floor
+                break;
+            case 3:
+                room = "3" + room.substring(1); // Normal on the 3rd floor
+                break;
+            case 4:
+                room = "4" + room.substring(1); // VIP on the 4th floor
+                break;
+            case 5:
+                room = "5" + room.substring(1); // VVIP on the 5th floor
+                break;
+        }
+
         switch (building) {
             case "THT":
-                System.out.println("Room types for THT building:");
-                System.out.println("1. ICU");
-                System.out.println("2. BPJS");
-                System.out.println("3. Normal");
-                System.out.println("4. VIP");
-                System.out.println("5. VVIP");
-                while (!validInput) {
-                    System.out.print("Choose room type (1-5): ");
-                    if (scanner.hasNextInt()) {
-                        roomType = scanner.nextInt();
-                        if (roomType >= 1 && roomType <= 5) {
-                            validInput = true;
-                        } else {
-                            System.out.println("Invalid room type. Please enter a number between 1 and 5.");
-                        }
-                    } else {
-                        System.out.println("Invalid input. Please enter a number.");
-                        scanner.next();  // Consume invalid input
-                    }
-                }
-                scanner.nextLine();  // Consume newline
-                System.out.print("Enter room number: ");
-                room = scanner.nextLine();
-                switch (roomType) {
-                    case 1:
-                        room = "1" + room.substring(1); // ICU on the 1st floor
-                        break;
-                    case 2:
-                        room = "2" + room.substring(1); // BPJS on the 2nd floor
-                        break;
-                    case 3:
-                        room = "3" + room.substring(1); // Normal on the 3rd floor
-                        break;
-                    case 4:
-                        room = "4" + room.substring(1); // VIP on the 4th floor
-                        break;
-                    case 5:
-                        room = "5" + room.substring(1); // VVIP on the 5th floor
-                        break;
-                }
                 hospitalTrie.admitPatient("T", room, patientName, false, 0);
                 break;
 
             case "Cardiology":
-                System.out.println("Room types for Cardiology building:");
-                System.out.println("1. ICU");
-                System.out.println("2. BPJS");
-                System.out.println("3. Normal");
-                System.out.println("4. VIP");
-                System.out.println("5. VVIP");
-                validInput = false;
-                while (!validInput) {
-                    System.out.print("Choose room type (1-5): ");
-                    if (scanner.hasNextInt()) {
-                        roomType = scanner.nextInt();
-                        if (roomType >= 1 && roomType <= 5) {
-                            validInput = true;
-                        } else {
-                            System.out.println("Invalid room type. Please enter a number between 1 and 5.");
-                        }
-                    } else {
-                        System.out.println("Invalid input. Please enter a number.");
-                        scanner.next();  // Consume invalid input
-                    }
-                }
-                scanner.nextLine();  // Consume newline
-                System.out.print("Enter room number: ");
-                room = scanner.nextLine();
-                switch (roomType) {
-                    case 1:
-                        room = "1" + room.substring(1); // ICU on the 1st floor
-                        break;
-                    case 2:
-                        room = "2" + room.substring(1); // BPJS on the 2nd floor
-                        break;
-                    case 3:
-                        room = "3" + room.substring(1); // Normal on the 3rd floor
-                        break;
-                    case 4:
-                        room = "4" + room.substring(1); // VIP on the 4th floor
-                        break;
-                    case 5:
-                        room = "5" + room.substring(1); // VVIP on the 5th floor
-                        break;
-                }
                 hospitalTrie.admitPatient("C", room, patientName, false, 0);
                 break;
 
             case "Orthopedi":
-                System.out.println("Room types for Orthopedi building:");
-                System.out.println("1. ICU");
-                System.out.println("2. BPJS");
-                System.out.println("3. Normal");
-                System.out.println("4. VIP");
-                System.out.println("5. VVIP");
-                validInput = false;
-                while (!validInput) {
-                    System.out.print("Choose room type (1-5): ");
-                    if (scanner.hasNextInt()) {
-                        roomType = scanner.nextInt();
-                        if (roomType >= 1 && roomType <= 5) {
-                            validInput = true;
-                        } else {
-                            System.out.println("Invalid room type. Please enter a number between 1 and 5.");
-                        }
-                    } else {
-                        System.out.println("Invalid input. Please enter a number.");
-                        scanner.next();  // Consume invalid input
-                    }
-                }
-                scanner.nextLine();  // Consume newline
-                System.out.print("Enter room number: ");
-                room = scanner.nextLine();
-                switch (roomType) {
-                    case 1:
-                        room = "1" + room.substring(1); // ICU on the 1st floor
-                        break;
-                    case 2:
-                        room = "2" + room.substring(1); // BPJS on the 2nd floor
-                        break;
-                    case 3:
-                        room = "3" + room.substring(1); // Normal on the 3rd floor
-                        break;
-                    case 4:
-                        room = "4" + room.substring(1); // VIP on the 4th floor
-                        break;
-                    case 5:
-                        room = "5" + room.substring(1); // VVIP on the 5th floor
-                        break;
-                }
                 hospitalTrie.admitPatient("O", room, patientName, false, 0);
                 break;
 
             case "Mental":
-                System.out.print("Enter room number: ");
-                room = scanner.nextLine();
-                hospitalTrie.admitPatient("M", room, patientName, true, MAX_FLOORS_MENTAL);
+                hospitalTrie.admitPatient("M", room, patientName, false, MAX_FLOORS_MENTAL);
                 break;
 
             case "Labor":
-                System.out.print("Enter room number: ");
-                room = scanner.nextLine();
-                hospitalTrie.admitPatient("L", room, patientName, true, MAX_FLOORS_LABOR);
+                hospitalTrie.admitPatient("L", room, patientName, false, MAX_FLOORS_LABOR);
                 break;
 
             default:
@@ -318,10 +233,10 @@ public class HospitalManagementSystem {
                 hospitalTrie.dischargePatient(building.substring(0, 1), room, false, 0);
                 break;
             case "Mental":
-                hospitalTrie.dischargePatient("M", room, true, MAX_FLOORS_MENTAL);
+                hospitalTrie.dischargePatient("M", room, false, MAX_FLOORS_MENTAL);
                 break;
             case "Labor":
-                hospitalTrie.dischargePatient("L", room, true, MAX_FLOORS_LABOR);
+                hospitalTrie.dischargePatient("L", room, false, MAX_FLOORS_LABOR);
                 break;
             default:
                 System.out.println("Invalid building.");
