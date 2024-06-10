@@ -2,25 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * trie untuk sistem rumah sakit 
- * 
- * Metode metodenya ada:
- * - Mendaftar pasien ke dalam suatu kamar berdasarkan jenisnya
- * - Mengubah ruangan ke ruangan yang benar
- * - mengeluarkan pasien jika sudah sembuh
- * - mengecheck ruangan apakah kosong atau tidak
- * - mencetak list ruangan setiap divisi
- * 
- */
-
 public class HospitalManagementSystem {
 
     private static final int R = 256; // extended ASCII
     private static final int MAX_FLOORS_MENTAL = 4;
     private static final int MAX_FLOORS_LABOR = 5;
 
-    //deklarasi node trienya
     private class TrieNode {
         boolean isOccupied;
         String patientName;
@@ -40,12 +27,6 @@ public class HospitalManagementSystem {
             root = new TrieNode();
         }
 
-        /*
-         * Metode ini digunakan untuk memasukkan pasien ke sebuah ruangan di rumah sakit
-         * Metode ini membutuhkan nama gedung, nomor kamar, nama pasien, dan objek Pemindai sebagai masukan. 
-         * Pertama-tama, metode ini memeriksa nama gedung dan nomor kamar untuk menentukan tipe dan lantai kamar. 
-         * Kemudian, metode ini menambahkan pasien ke struktur data Trie dan memperbarui status hunian kamar.
-         */
         public void admitPatient(String building, String room, String patientName, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
             if (limitFloors && !isValidFloor(room, maxFloors)) {
@@ -64,18 +45,12 @@ public class HospitalManagementSystem {
             if (!current.isOccupied) {
                 current.isOccupied = true;
                 current.patientName = patientName;
-                System.out.println(patientName + " has been admitted to room " + room + " in " + " building " +building + "." );
+                System.out.println(patientName + " has been admitted to room " + room + " in building " + building + ".");
             } else {
                 System.out.println("Room " + room + " in " + building + " building is already occupied by " + current.patientName + ".");
             }
         }
 
-        /**
-         * Metode ini digunakan untuk mengeluarkan pasien dari sebuah ruangan di rumah sakit. 
-         * Metode ini membutuhkan nama gedung dan nomor kamar sebagai masukan.
-         * Pertama-tama, metode ini memeriksa nama gedung dan nomor kamar untuk menentukan tipe dan lantai kamar.
-         * Kemudian, metode ini menghapus pasien dari struktur data Trie dan memperbarui status hunian kamar.
-         */
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
             if (limitFloors && !isValidFloor(room, maxFloors)) {
@@ -101,11 +76,6 @@ public class HospitalManagementSystem {
             }
         }
 
-        /*
-         * Metode ini digunakan untuk memeriksa apakah sebuah ruangan ditempati atau tidak. 
-         * Metode ini mengambil nama gedung dan nomor kamar sebagai input dan 
-         * mengembalikan nilai boolean yang menunjukkan apakah kamar tersebut terisi atau tidak.
-         */
         public boolean isOccupied(String building, String room) {
             String fullRoom = building + room;
             TrieNode current = root;
@@ -119,8 +89,6 @@ public class HospitalManagementSystem {
             return current.isOccupied;
         }
 
-
-        //mengelist ruangan yang ditempati pasien
         public List<String> listOccupiedRooms() {
             List<String> list = new ArrayList<>();
             listRooms(root, "", list);
@@ -139,10 +107,6 @@ public class HospitalManagementSystem {
             }
         }
 
-        /*
-         * Fungsi ini digunakan untuk mencetak struktur data Trie dalam format yang dapat dibaca manusia.
-         * Metode ini mengambil simpul akar dari Trie dan tingkat lekukan sebagai masukan dan mencetak struktur data Trie dalam format seperti pohon.
-         */
         public void print() {
             print("", root, 0, true, true);
         }
@@ -189,56 +153,36 @@ public class HospitalManagementSystem {
         hospitalTrie = new HospitalTrie();
     }
 
-    /*
-     * memanggil fungsi admitPatient
-     */
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
+        int roomType = -1;
+        boolean validInput = false;
+
         switch (building) {
             case "THT":
-            System.out.println("Room types for THT building:");
-            System.out.println("1. ICU");
-            System.out.println("2. BPJS");
-            System.out.println("3. Normal");
-            System.out.println("4. VIP");
-            System.out.println("5. VVIP");
-            System.out.print("Choose room type (1-5): ");
-            int roomTypeTHT = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
-
-            switch (roomTypeTHT) {
-                case 1:
-                    room = "1" + room.substring(1); // ICU on the 1st floor
-                    break;
-                case 2:
-                    room = "2" + room.substring(1); // BPJS on the 2nd floor
-                    break;
-                case 3:
-                    room = "3" + room.substring(1); // Normal on the 3rd floor
-                    break;
-                case 4:
-                    room = "4" + room.substring(1); // VIP on the 4th floor
-                    break;
-                case 5:
-                    room = "5" + room.substring(1); // VVIP on the 5th floor
-                    break;
-                default:
-                    System.out.println("Invalid room type.");
-                }
-                hospitalTrie.admitPatient("T", room, patientName, false, 0);
-                break;
-
-            case "Cardiology":
-                System.out.println("Room types for Cardiology building:");
+                System.out.println("Room types for THT building:");
                 System.out.println("1. ICU");
                 System.out.println("2. BPJS");
                 System.out.println("3. Normal");
                 System.out.println("4. VIP");
                 System.out.println("5. VVIP");
-                System.out.print("Choose room type (1-5): ");
-                int roomTypeCardio = scanner.nextInt();
+                while (!validInput) {
+                    System.out.print("Choose room type (1-5): ");
+                    if (scanner.hasNextInt()) {
+                        roomType = scanner.nextInt();
+                        if (roomType >= 1 && roomType <= 5) {
+                            validInput = true;
+                        } else {
+                            System.out.println("Invalid room type. Please enter a number between 1 and 5.");
+                        }
+                    } else {
+                        System.out.println("Invalid input. Please enter a number.");
+                        scanner.next();  // Consume invalid input
+                    }
+                }
                 scanner.nextLine();  // Consume newline
-    
-                switch (roomTypeCardio) {
+                System.out.print("Enter room number: ");
+                room = scanner.nextLine();
+                switch (roomType) {
                     case 1:
                         room = "1" + room.substring(1); // ICU on the 1st floor
                         break;
@@ -254,105 +198,124 @@ public class HospitalManagementSystem {
                     case 5:
                         room = "5" + room.substring(1); // VVIP on the 5th floor
                         break;
-                    default:
-                        System.out.println("Invalid room type.");
+                }
+                hospitalTrie.admitPatient("T", room, patientName, false, 0);
+                break;
+
+            case "Cardiology":
+                System.out.println("Room types for Cardiology building:");
+                System.out.println("1. ICU");
+                System.out.println("2. BPJS");
+                System.out.println("3. Normal");
+                System.out.println("4. VIP");
+                System.out.println("5. VVIP");
+                validInput = false;
+                while (!validInput) {
+                    System.out.print("Choose room type (1-5): ");
+                    if (scanner.hasNextInt()) {
+                        roomType = scanner.nextInt();
+                        if (roomType >= 1 && roomType <= 5) {
+                            validInput = true;
+                        } else {
+                            System.out.println("Invalid room type. Please enter a number between 1 and 5.");
+                        }
+                    } else {
+                        System.out.println("Invalid input. Please enter a number.");
+                        scanner.next();  // Consume invalid input
+                    }
+                }
+                scanner.nextLine();  // Consume newline
+                System.out.print("Enter room number: ");
+                room = scanner.nextLine();
+                switch (roomType) {
+                    case 1:
+                        room = "1" + room.substring(1); // ICU on the 1st floor
+                        break;
+                    case 2:
+                        room = "2" + room.substring(1); // BPJS on the 2nd floor
+                        break;
+                    case 3:
+                        room = "3" + room.substring(1); // Normal on the 3rd floor
+                        break;
+                    case 4:
+                        room = "4" + room.substring(1); // VIP on the 4th floor
+                        break;
+                    case 5:
+                        room = "5" + room.substring(1); // VVIP on the 5th floor
+                        break;
                 }
                 hospitalTrie.admitPatient("C", room, patientName, false, 0);
                 break;
 
             case "Orthopedi":
-            System.out.println("Room types for Orthopedic building:");
-            System.out.println("1. ICU");
-            System.out.println("2. BPJS");
-            System.out.println("3. Normal");
-            System.out.println("4. VIP");
-            System.out.println("5. VVIP");
-            System.out.print("Choose room type (1-5): ");
-            int roomTypeOrtho = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
-
-            switch (roomTypeOrtho) {
-                case 1:
-                    room = "1" + room.substring(1); // ICU on the 1st floor
-                    break;
-                case 2:
-                    room = "2" + room.substring(1); // BPJS on the 2nd floor
-                    break;
-                case 3:
-                    room = "3" + room.substring(1); // Normal on the 3rd floor
-                    break;
-                case 4:
-                    room = "4" + room.substring(1); // VIP on the 4th floor
-                    break;
-                case 5:
-                    room = "5" + room.substring(1); // VVIP on the 5th floor
-                    break;
-                default:
-                    System.out.println("Invalid room type.");
+                System.out.println("Room types for Orthopedi building:");
+                System.out.println("1. ICU");
+                System.out.println("2. BPJS");
+                System.out.println("3. Normal");
+                System.out.println("4. VIP");
+                System.out.println("5. VVIP");
+                validInput = false;
+                while (!validInput) {
+                    System.out.print("Choose room type (1-5): ");
+                    if (scanner.hasNextInt()) {
+                        roomType = scanner.nextInt();
+                        if (roomType >= 1 && roomType <= 5) {
+                            validInput = true;
+                        } else {
+                            System.out.println("Invalid room type. Please enter a number between 1 and 5.");
+                        }
+                    } else {
+                        System.out.println("Invalid input. Please enter a number.");
+                        scanner.next();  // Consume invalid input
+                    }
+                }
+                scanner.nextLine();  // Consume newline
+                System.out.print("Enter room number: ");
+                room = scanner.nextLine();
+                switch (roomType) {
+                    case 1:
+                        room = "1" + room.substring(1); // ICU on the 1st floor
+                        break;
+                    case 2:
+                        room = "2" + room.substring(1); // BPJS on the 2nd floor
+                        break;
+                    case 3:
+                        room = "3" + room.substring(1); // Normal on the 3rd floor
+                        break;
+                    case 4:
+                        room = "4" + room.substring(1); // VIP on the 4th floor
+                        break;
+                    case 5:
+                        room = "5" + room.substring(1); // VVIP on the 5th floor
+                        break;
                 }
                 hospitalTrie.admitPatient("O", room, patientName, false, 0);
                 break;
-                
+
             case "Mental":
-                System.out.print("Is the patient hallucinating? (yes/no): ");
-                String hallucinate = scanner.nextLine().trim().toLowerCase();
-                System.out.print("Does the patient like to hurt themselves? (yes/no): ");
-                String selfHarm = scanner.nextLine().trim().toLowerCase();
-                
-                if (hallucinate.equals("yes") && selfHarm.equals("yes")) {
-                    room = "3" + room.substring(1); // Admitting to 3rd floor
-                } else if (hallucinate.equals("yes")) {
-                    room = "2" + room.substring(1); // Admitting to 2nd floor
-                } else if (selfHarm.equals("yes")) {
-                    room = "3" + room.substring(1); // Admitting to 3rd floor
-                } else {
-                    room = "1" + room.substring(1); // Admitting to 1st floor
-                }
-                
-                hospitalTrie.admitPatient("M", room, patientName, false, MAX_FLOORS_MENTAL);
+                System.out.print("Enter room number: ");
+                room = scanner.nextLine();
+                hospitalTrie.admitPatient("M", room, patientName, true, MAX_FLOORS_MENTAL);
                 break;
 
             case "Labor":
-            System.out.println("Room types for Labor building:");
-            System.out.println("1. ICU");
-            System.out.println("2. BPJS");
-            System.out.println("3. Normal");
-            System.out.println("4. VIP");
-            System.out.println("5. VVIP");
-            System.out.print("Choose room type (1-5): ");
-            int roomTypeLabor = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
-
-            switch (roomTypeLabor) {
-                case 1:
-                    room = "1" + room.substring(1); // ICU on the 1st floor
-                    break;
-                case 2:
-                    room = "2" + room.substring(1); // BPJS on the 2nd floor
-                    break;
-                case 3:
-                    room = "3" + room.substring(1); // Normal on the 3rd floor
-                    break;
-                case 4:
-                    room = "4" + room.substring(1); // VIP on the 4th floor
-                    break;
-                case 5:
-                    room = "5" + room.substring(1); // VVIP on the 5th floor
-                    break;
-                default:
-                    System.out.println("Invalid room type.");
-                }
+                System.out.print("Enter room number: ");
+                room = scanner.nextLine();
                 hospitalTrie.admitPatient("L", room, patientName, true, MAX_FLOORS_LABOR);
                 break;
+
             default:
                 System.out.println("Invalid building.");
+                break;
         }
     }
 
     public void dischargePatient(String building, String room) {
         switch (building) {
+            case "THT":
+            case "Cardiology":
             case "Orthopedi":
-                hospitalTrie.dischargePatient("O", room, false, 0);
+                hospitalTrie.dischargePatient(building.substring(0, 1), room, false, 0);
                 break;
             case "Mental":
                 hospitalTrie.dischargePatient("M", room, true, MAX_FLOORS_MENTAL);
@@ -360,101 +323,88 @@ public class HospitalManagementSystem {
             case "Labor":
                 hospitalTrie.dischargePatient("L", room, true, MAX_FLOORS_LABOR);
                 break;
-            case "Cardiology":
-                hospitalTrie.dischargePatient("C", room, false, 0);
-                break;
-            case "THT":
-                hospitalTrie.dischargePatient("T", room, false, 0);
-                break;
-                default:
+            default:
                 System.out.println("Invalid building.");
+                break;
         }
     }
 
     public boolean isOccupied(String building, String room) {
-        switch (building) {
-            case "Orthopedi":
-                return hospitalTrie.isOccupied("O", room);
-            case "Mental":
-                return hospitalTrie.isOccupied("M", room);
-            case "Labor":
-                return hospitalTrie.isOccupied("L", room);
-            case "Cardiology":
-                return hospitalTrie.isOccupied("C", room);
-            case "THT":
-                return hospitalTrie.isOccupied("T", room);
-            default:
-                System.out.println("Invalid building.");
-                return false;
-        }
+        return hospitalTrie.isOccupied(building.substring(0, 1), room);
     }
 
-    public void printBuilding() {
+    public List<String> listOccupiedRooms() {
+        return hospitalTrie.listOccupiedRooms();
+    }
+
+    public void printTrie() {
         hospitalTrie.print();
     }
 
     public static void main(String[] args) {
-        HospitalManagementSystem hospital = new HospitalManagementSystem();
         Scanner scanner = new Scanner(System.in);
+        HospitalManagementSystem system = new HospitalManagementSystem();
 
         while (true) {
-            System.out.println("\nHospital Management System");
-            System.out.println("1. Admit Patient");
+            System.out.println("\n1. Admit Patient");
             System.out.println("2. Discharge Patient");
             System.out.println("3. Check Room Occupancy");
-            System.out.println("4. Print Building Status");
-            System.out.println("5. Exit");
+            System.out.println("4. List Occupied Rooms");
+            System.out.println("5. Print Trie");
+            System.out.println("6. Exit");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
+            int option = scanner.nextInt();
             scanner.nextLine();  // Consume newline
-            if (choice == 5) {
-                break;
-            }
 
-            switch (choice) {
+            switch (option) {
                 case 1:
                     System.out.print("Enter patient name: ");
                     String patientName = scanner.nextLine();
-                    System.out.print("Enter building (Orthopedi, Mental, Labor, THT, Cardiology): ");
+                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     String building = scanner.nextLine();
-                    String room = "";
-                    if (building.equalsIgnoreCase("Mental")) {
-                        hospital.printBuilding();
-                        System.out.println("\n1st floor for normal mentally ill patients");
-                        System.out.println("2nd floor for Middle-level mentally ill patients");
-                        System.out.println("3rd floor for Maximum level security mentally ill patients");
-                        System.out.print("Enter room number (it will be reassigned based on the patient's condition): ");
-                        room = scanner.nextLine();
-                    } else {
-                        System.out.print("Enter room number: ");
-                        room = scanner.nextLine();
-                    }
-                    hospital.admitPatient(building, room, patientName, scanner);
+                    String room = "";  // room will be entered based on building type
+                    system.admitPatient(building, room, patientName, scanner);
                     break;
                 case 2:
-                    System.out.print("Enter building (Orthopedi, Mental, Labor, THT, Cardiology): ");
-                    String building2 = scanner.nextLine();
+                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    building = scanner.nextLine();
                     System.out.print("Enter room number: ");
                     room = scanner.nextLine();
-                    hospital.dischargePatient(building2, room);
+                    system.dischargePatient(building, room);
                     break;
                 case 3:
-                    System.out.print("Enter building (Orthopedi, Mental, Labor,THT,Cardiology): ");
-                    String building3 = scanner.nextLine();
+                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    building = scanner.nextLine();
                     System.out.print("Enter room number: ");
                     room = scanner.nextLine();
-                    boolean isOccupied = hospital.isOccupied(building3, room);
-                    System.out.println("Room " + room + " in " + building3 + " building is " + (isOccupied ? "occupied." : "empty."));
+                    if (system.isOccupied(building, room)) {
+                        System.out.println("The room is occupied.");
+                    } else {
+                        System.out.println("The room is available.");
+                    }
                     break;
                 case 4:
-                    hospital.printBuilding();
+                    List<String> occupiedRooms = system.listOccupiedRooms();
+                    if (occupiedRooms.isEmpty()) {
+                        System.out.println("No rooms are occupied.");
+                    } else {
+                        System.out.println("Occupied rooms:");
+                        for (String occupiedRoom : occupiedRooms) {
+                            System.out.println(occupiedRoom);
+                        }
+                    }
                     break;
+                case 5:
+                    system.printTrie();
+                    break;
+                case 6:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid option. Please try again.");
                     break;
             }
         }
-
-        scanner.close();
     }
 }
