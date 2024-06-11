@@ -65,82 +65,97 @@ public class HospitalManagementSystem {
             }
         }
 
-        //
+        // dischargePatient merupakan method untuk mengeluarkan atau melepaskan pasien dari kamar di rumah sakit yang mereka tempati sebelumnya
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
-            String fullRoom = building + room;
-            if (limitFloors && !isValidRoom(room, maxFloors)) {
+            String fullRoom = building + room; // menggabungkan nama gedung dan nomor kamar 
+            if (limitFloors && !isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
                 System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
                 return;
             }
 
-            TrieNode current = root;
+            TrieNode current = root; // current melacak inisial trie 
             for (int i = 0, L = fullRoom.length(); i < L; i++) {
+                // code di bawah digunakan untuk mengonversi karakter di posisi tertentu dari nomor kamar lengkap menjadi nilai ASCII
+                // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
-                if (current.children[id] == null) {
+                if (current.children[id] == null) { // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. jika tidak, maka membuat inisial baru 
                     System.out.println("Kamar " + room + " di gedung " + building + " tidak ada.");
                     return;
                 }
                 current = current.children[id];
             }
-            if (current.isOccupied) {
+
+            if (current.isOccupied) { // memeriksa apakah kamar saat ini sedang ditempati atau tidak
                 System.out.println(current.patientName + " telah keluar dari kamar " + room + " di gedung " + building + ".");
+                // jika kamar sedang ditempati maka akan keluar output yang di code atas
+                // setelah outputnya keluar maka atribut isOccupied akan diatur menjadi false, dan nama pasiennya di hapus dari trie 
                 current.isOccupied = false;
                 current.patientName = "";
             } else {
+                // jika kamar tidak di tempati maka, kamar akan di beri tahu bahwa kamar tersebut sudah kosong 
                 System.out.println("Kamar " + room + " di gedung " + building + " sudah kosong.");
             }
         }
 
+        // metod ini digunakan untuk memeriksa apakah kamar tersebut sudah di tempati atau tidak
         public boolean isOccupied(String building, String room) {
-            String fullRoom = building + room;
-            TrieNode current = root;
+            String fullRoom = building + room; // menggabungkan nama gedung dan nomor kamar 
+            TrieNode current = root; // current melacak inisial trie 
             for (int i = 0, L = fullRoom.length(); i < L; i++) {
+                // code di bawah digunakan untuk mengonversi karakter di posisi tertentu dari nomor kamar lengkap menjadi nilai ASCII
+                // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
-                if (current.children[id] == null) {
+                if (current.children[id] == null) {  // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. jika tidak, maka membuat inisial baru 
                     return false;
                 }
-                current = current.children[id];
+                current = current.children[id]; // digunakan untuk memeriksa kamar tertrntu di gedung tertentu sudah di tempati atau belum
             }
-            return current.isOccupied;
+            return current.isOccupied; // mengembalikan nilai atribut isOccupied dari inisial yang mewakili kamar yang sedang dipertimbangkan
         }
 
+        // metod bantu rekursif untuk membuat daftar kamar
         public List<String> listOccupiedRooms() {
             List<String> list = new ArrayList<>();
-            listRooms(root, "", list);
+            listRooms(root, "", list); //  
             return list;
         }
 
+        // metode ini secara rekursif mengunjungi semua simpul trie untuk membangun daftar kamar yangg sedang di tempati
         private void listRooms(TrieNode current, String prefix, List<String> list) {
-            if (current == null) return;
-            if (current.isOccupied) {
-                list.add(prefix + " (ditempati oleh " + current.patientName + ")");
+            if (current == null) return; // jika inisial trienya sudah tidak ada atau null, maka dia akan berhenti 
+            if (current.isOccupied) { // memeriksa apakah inisial saat ini mewakili kamar yang sedang ditempati, jika iya maka akan menambahkan list kamar yang ditempati 
+                list.add(prefix + " (ditempati oleh " + current.patientName + ")"); // jika memenuhi syarat yang di atas, maka akan menambahkan ke dalam list 
             }
-            for (int i = 0; i < R; i++) {
-                if (current.children[i] != null) {
-                    listRooms(current.children[i], prefix + (char) i, list);
+            for (int i = 0; i < R; i++) { // menjalankan ke semua inisial trie 
+                if (current.children[i] != null) { // memeriksa apakah ada children dengan indeks tertentu. jika ada, artinya ada kamar yang terhubung di bawah inisial saat ini
+                    listRooms(current.children[i], prefix + (char) i, list); // jika di atas true, rekursi dilakukan ke children inisial tersebut untuk melanjutkan pencarian kamar yang ditempati di bawahnya
                 }
             }
         }
 
+        // metode ini digunakan untuk mencetak semua kamar yang ditempati dalam trie 
         public void print() {
-            print("", root, 0, true, true);
+            print("", root, 0, true, true); // panggilan metode rekursif untuk mencari trie 
         }
 
+        // metod inimencetak trie secara rekursif, memberikan prefix(bagian awal dari suatu kata) yang sesuai untuk setiap tingkat kedalaman.
         private void print(String prefix, TrieNode root, int id, boolean isTail, boolean isRoot) {
-            if (!isRoot) {
+            if (!isRoot) { // memeriksa apakah inisial yang sedang dipilih bukan merupakan akar trie
+                // code di bawah ini untuk mencetak informasi tentang inisial saat ini, termasuk karakternya, dan jika ditempati, dia juga mencetak nama pasien yang ditempati
                 System.out.println(prefix + (isTail ? "└── " : "├── ") + (char) id + (root.isOccupied ? " *** (ditempati oleh " + root.patientName + ")" : ""));
             }
 
-            TrieNode lastChild = null;
-            int lastChildId = 0;
-            boolean isLastChild = true;
-            for (int i = R - 1; i >= 0; i--) {
-                if (root.children[i] != null) {
-                    if (isLastChild) {
-                        isLastChild = false;
-                        lastChild = root.children[i];
-                        lastChildId = i;
-                    } else {
+            TrieNode lastChild = null;          // lastChild  menyimpan refrensi ke  children terakhir dari inisial saat ini
+            int lastChildId = 0;                // lastChildId adalah indeks dari children terakhir dari inisial saat ini
+            boolean isLastChild = true;         // isLastChild menandakan apakah inisial saat ini adalah children terakhir atau bukan
+            for (int i = R - 1; i >= 0; i--) {  // loop ini berjalan mundur melalui semua kemungkinan inisial children dari inisial saat ini dalam trie 
+                if (root.children[i] != null) { // memeriksa apakah ada children dengan indeks tertentu. jika ada, maka itu adalah children terakhir 
+                    if (isLastChild) {          // memeriksa apakah inisial saat ini adalah children terakhir atau bukan
+                        isLastChild = false;    // jika anak terakhir belum di temuka, maka nilai isLastChild di atur ke false, karena inisial saat ini bukan children terakhir.
+                        lastChild = root.children[i]; // jika children terakhir belum di temukan, maka variabel 'lastChild' diatur untuk menuyimpan refrensi ke children terakhir yang ditemukan
+                        lastChildId = i;        // jika anak terakhir belum ditemukan, maka indeks children terakhir di perbarui
+                    } else {                    // jika children terakhir sudah ditemukan, maka angkah selanjutnya adalah mencetak informasi tentang childrens yang bukan anak terakhir
+                        // di bawah ini adalah pemanggilan rekursif dalam mencetak informasi tentang childrenterakhir dari inisial saat ini
                         print(prefix + (isRoot ? "" : (isTail ? "    " : "│   ")), root.children[i], i, false, false);
                     }
                 }
