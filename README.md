@@ -17,10 +17,10 @@ Program untuk membuat penempatan kamar di rumah sakit dan rincian harganya
 
 ✔️ Sudah bisa display semua trie
 
-❌ Tambahin limit ruangan ke Mental , labor, kardiologi, THT, dan orthopedi
+✔️ Tambahin limit ruangan ke Mental , labor, kardiologi, THT, dan orthopedi
 
 ❌ Tambahin harga per divisi
 
-❌ Tambahin display tree kamar yang available
+✔️ Tambahin display tree kamar yang available
 
-❌ Tambahin script buat ngisi kamar kosong 
+<!-- ❌ Tambahin script buat ngisi kamar kosong  -->
