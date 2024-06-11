@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class HospitalManagementSystem {
 
     private static final int R = 256; // extended ASCII
-    private static final int MAX_FLOORS_MENTAL = 4;
-    private static final int MAX_FLOORS_LABOR = 5;
+    private static final int MAX_FLOORS_RUMAHSAKIT = 5;
+    private static final int ROOMS_PER_FLOOR = 10;
 
     private class TrieNode {
         boolean isOccupied;
@@ -29,8 +29,8 @@ public class HospitalManagementSystem {
 
         public void admitPatient(String building, String room, String patientName, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
-            if (limitFloors && !isValidFloor(room, maxFloors)) {
-                System.out.println("Invalid floor. The building has a limit of " + maxFloors + " floors.");
+            if (limitFloors && !isValidRoom(room, maxFloors)) {
+                System.out.println("Invalid room. The building has a limit of " + maxFloors + " floors with 10 rooms per floor (000-009).");
                 return;
             }
 
@@ -53,8 +53,8 @@ public class HospitalManagementSystem {
 
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
-            if (limitFloors && !isValidFloor(room, maxFloors)) {
-                System.out.println("Invalid floor. The building has a limit of " + maxFloors + " floors.");
+            if (limitFloors && !isValidRoom(room, maxFloors)) {
+                System.out.println("Invalid room. The building has a limit of " + maxFloors + " floors with 10 rooms per floor (000-009).");
                 return;
             }
 
@@ -135,15 +135,28 @@ public class HospitalManagementSystem {
             }
         }
 
-        private boolean isValidFloor(String room, int maxFloors) {
-            if (room == null || room.isEmpty()) return false;
-            int floorNumber = 0;
-            int i = 0;
-            while (i < room.length() && Character.isDigit(room.charAt(i))) {
-                floorNumber = floorNumber * 10 + (room.charAt(i) - '0');
-                i++;
+        private boolean isValidRoom(String room, int maxFloors) {
+            if (room == null || room.length() != 4) return false;
+            try {
+                int floorNumber = Integer.parseInt(room.substring(0, 1));
+                int roomNumber = Integer.parseInt(room.substring(1));
+                return floorNumber > 0 && floorNumber <= maxFloors && roomNumber >= 0 && roomNumber < ROOMS_PER_FLOOR;
+            } catch (NumberFormatException e) {
+                return false;
             }
-            return floorNumber > 0 && floorNumber <= maxFloors;
+        }
+
+        public List<String> listAvailableRooms(String building, int maxFloors) {
+            List<String> availableRooms = new ArrayList<>();
+            for (int floor = 1; floor <= maxFloors; floor++) {
+                for (int room = 0; room < ROOMS_PER_FLOOR; room++) {
+                    String roomString = String.format("%d%03d", floor, room);
+                    if (!isOccupied(building, roomString)) {
+                        availableRooms.add(building + roomString);
+                    }
+                }
+            }
+            return availableRooms;
         }
     }
 
@@ -178,45 +191,49 @@ public class HospitalManagementSystem {
             }
         }
         scanner.nextLine();  // Consume newline
-        System.out.print("Enter room number: ");
+        System.out.print("Enter room number (000-009): ");
         room = scanner.nextLine();
+        if (!isValidRoomNumber(room)) {
+            System.out.println("Invalid room number. Please enter a number between 000 and 009.");
+            return;
+        }
         switch (roomType) {
             case 1:
-                room = "1" + room.substring(1); // ICU on the 1st floor
+                room = "1" + room; // ICU on the 1st floor
                 break;
             case 2:
-                room = "2" + room.substring(1); // BPJS on the 2nd floor
+                room = "2" + room; // BPJS on the 2nd floor
                 break;
             case 3:
-                room = "3" + room.substring(1); // Normal on the 3rd floor
+                room = "3" + room; // Normal on the 3rd floor
                 break;
             case 4:
-                room = "4" + room.substring(1); // VIP on the 4th floor
+                room = "4" + room; // VIP on the 4th floor
                 break;
             case 5:
-                room = "5" + room.substring(1); // VVIP on the 5th floor
+                room = "5" + room; // VVIP on the 5th floor
                 break;
         }
 
         switch (building) {
             case "THT":
-                hospitalTrie.admitPatient("T", room, patientName, false, 0);
+                hospitalTrie.admitPatient("T", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "Cardiology":
-                hospitalTrie.admitPatient("C", room, patientName, false, 0);
+                hospitalTrie.admitPatient("C", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "Orthopedi":
-                hospitalTrie.admitPatient("O", room, patientName, false, 0);
+                hospitalTrie.admitPatient("O", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "Mental":
-                hospitalTrie.admitPatient("M", room, patientName, false, MAX_FLOORS_MENTAL);
+                hospitalTrie.admitPatient("M", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "Labor":
-                hospitalTrie.admitPatient("L", room, patientName, false, MAX_FLOORS_LABOR);
+                hospitalTrie.admitPatient("L", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             default:
@@ -228,16 +245,25 @@ public class HospitalManagementSystem {
     public void dischargePatient(String building, String room) {
         switch (building) {
             case "THT":
+                hospitalTrie.dischargePatient("T", room, false, MAX_FLOORS_RUMAHSAKIT);
+                break;
+
             case "Cardiology":
+                hospitalTrie.dischargePatient("C", room, false, MAX_FLOORS_RUMAHSAKIT);
+                break;
+
             case "Orthopedi":
-                hospitalTrie.dischargePatient(building.substring(0, 1), room, false, 0);
+                hospitalTrie.dischargePatient("O", room, false, MAX_FLOORS_RUMAHSAKIT);
                 break;
+
             case "Mental":
-                hospitalTrie.dischargePatient("M", room, false, MAX_FLOORS_MENTAL);
+                hospitalTrie.dischargePatient("M", room, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
+
             case "Labor":
-                hospitalTrie.dischargePatient("L", room, false, MAX_FLOORS_LABOR);
+                hospitalTrie.dischargePatient("L", room, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
+
             default:
                 System.out.println("Invalid building.");
                 break;
@@ -256,6 +282,44 @@ public class HospitalManagementSystem {
         hospitalTrie.print();
     }
 
+    public void listAvailableRooms(String building) {
+        int maxFloors = 0;
+        switch (building) {
+            case "THT":
+                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                break;
+
+            case "Cardiology":
+                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                break;
+
+            case "Orthopedi":
+                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                break;
+
+            case "Mental":
+                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                break;
+
+            case "Labor":
+                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                break;
+
+            default:
+                System.out.println("Invalid building.");
+                return;
+        }
+        List<String> availableRooms = hospitalTrie.listAvailableRooms(building.substring(0, 1), maxFloors);
+        if (availableRooms.isEmpty()) {
+            System.out.println("No rooms are available.");
+        } else {
+            System.out.println("Available rooms:");
+            for (String availableRoom : availableRooms) {
+                System.out.println(availableRoom);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         HospitalManagementSystem system = new HospitalManagementSystem();
@@ -266,7 +330,8 @@ public class HospitalManagementSystem {
             System.out.println("3. Check Room Occupancy");
             System.out.println("4. List Occupied Rooms");
             System.out.println("5. Print Trie");
-            System.out.println("6. Exit");
+            System.out.println("6. List Available Rooms");
+            System.out.println("7. Exit");
             System.out.print("Choose an option: ");
             int option = scanner.nextInt();
             scanner.nextLine();  // Consume newline
@@ -313,6 +378,11 @@ public class HospitalManagementSystem {
                     system.printTrie();
                     break;
                 case 6:
+                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    building = scanner.nextLine();
+                    system.listAvailableRooms(building);
+                    break;
+                case 7:
                     System.out.println("Exiting...");
                     scanner.close();
                     return;
@@ -321,5 +391,9 @@ public class HospitalManagementSystem {
                     break;
             }
         }
+    }
+
+    private static boolean isValidRoomNumber(String room) {
+        return room.matches("00[0-9]");
     }
 }
