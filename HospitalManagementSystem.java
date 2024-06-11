@@ -30,7 +30,7 @@ public class HospitalManagementSystem {
         public void admitPatient(String building, String room, String patientName, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
             if (limitFloors && !isValidRoom(room, maxFloors)) {
-                System.out.println("Invalid room. The building has a limit of " + maxFloors + " floors with 10 rooms per floor (000-009).");
+                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
                 return;
             }
 
@@ -45,16 +45,16 @@ public class HospitalManagementSystem {
             if (!current.isOccupied) {
                 current.isOccupied = true;
                 current.patientName = patientName;
-                System.out.println(patientName + " has been admitted to room " + room + " in building " + building + ".");
+                System.out.println(patientName + " telah diterima di kamar " + room + " di gedung " + building + ".");
             } else {
-                System.out.println("Room " + room + " in " + building + " building is already occupied by " + current.patientName + ".");
+                System.out.println("Kamar " + room + " di gedung " + building + " sudah ditempati oleh " + current.patientName + ".");
             }
         }
 
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
             if (limitFloors && !isValidRoom(room, maxFloors)) {
-                System.out.println("Invalid room. The building has a limit of " + maxFloors + " floors with 10 rooms per floor (000-009).");
+                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
                 return;
             }
 
@@ -62,17 +62,17 @@ public class HospitalManagementSystem {
             for (int i = 0, L = fullRoom.length(); i < L; i++) {
                 int id = fullRoom.charAt(i);
                 if (current.children[id] == null) {
-                    System.out.println("Room " + room + " in " + building + " building does not exist.");
+                    System.out.println("Kamar " + room + " di gedung " + building + " tidak ada.");
                     return;
                 }
                 current = current.children[id];
             }
             if (current.isOccupied) {
-                System.out.println(current.patientName + " has been discharged from room " + room + " in " + building + " building.");
+                System.out.println(current.patientName + " telah keluar dari kamar " + room + " di gedung " + building + ".");
                 current.isOccupied = false;
                 current.patientName = "";
             } else {
-                System.out.println("Room " + room + " in " + building + " building is already empty.");
+                System.out.println("Kamar " + room + " di gedung " + building + " sudah kosong.");
             }
         }
 
@@ -98,7 +98,7 @@ public class HospitalManagementSystem {
         private void listRooms(TrieNode current, String prefix, List<String> list) {
             if (current == null) return;
             if (current.isOccupied) {
-                list.add(prefix + " (occupied by " + current.patientName + ")");
+                list.add(prefix + " (ditempati oleh " + current.patientName + ")");
             }
             for (int i = 0; i < R; i++) {
                 if (current.children[i] != null) {
@@ -113,7 +113,7 @@ public class HospitalManagementSystem {
 
         private void print(String prefix, TrieNode root, int id, boolean isTail, boolean isRoot) {
             if (!isRoot) {
-                System.out.println(prefix + (isTail ? "└── " : "├── ") + (char) id + (root.isOccupied ? " *** (occupied by " + root.patientName + ")" : ""));
+                System.out.println(prefix + (isTail ? "└── " : "├── ") + (char) id + (root.isOccupied ? " *** (ditempati oleh " + root.patientName + ")" : ""));
             }
 
             TrieNode lastChild = null;
@@ -170,31 +170,31 @@ public class HospitalManagementSystem {
         int roomType = -1;
         boolean validInput = false;
 
-        System.out.println("Room types for " + building + " building:");
+        System.out.println("Tipe kamar untuk gedung " + building + ":");
         System.out.println("1. ICU");
         System.out.println("2. BPJS");
         System.out.println("3. Normal");
         System.out.println("4. VIP");
         System.out.println("5. VVIP");
         while (!validInput) {
-            System.out.print("Choose room type (1-5): ");
+            System.out.print("Pilih tipe kamar (1-5): ");
             if (scanner.hasNextInt()) {
                 roomType = scanner.nextInt();
                 if (roomType >= 1 && roomType <= 5) {
                     validInput = true;
                 } else {
-                    System.out.println("Invalid room type. Please enter a number between 1 and 5.");
+                    System.out.println("Tipe kamar tidak valid. Silakan masukkan angka antara 1 dan 5.");
                 }
             } else {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("Input tidak valid. Silakan masukkan angka.");
                 scanner.next();  // Consume invalid input
             }
         }
         scanner.nextLine();  // Consume newline
-        System.out.print("Enter room number (000-009): ");
+        System.out.print("Masukkan nomor kamar (000-009): ");
         room = scanner.nextLine();
         if (!isValidRoomNumber(room)) {
-            System.out.println("Invalid room number. Please enter a number between 000 and 009.");
+            System.out.println("Nomor kamar tidak valid. Silakan masukkan angka antara 000 dan 009.");
             return;
         }
         switch (roomType) {
@@ -237,7 +237,7 @@ public class HospitalManagementSystem {
                 break;
 
             default:
-                System.out.println("Invalid building.");
+                System.out.println("Gedung tidak valid.");
                 break;
         }
     }
@@ -265,7 +265,7 @@ public class HospitalManagementSystem {
                 break;
 
             default:
-                System.out.println("Invalid building.");
+                System.out.println("Gedung tidak valid.");
                 break;
         }
     }
@@ -306,14 +306,14 @@ public class HospitalManagementSystem {
                 break;
 
             default:
-                System.out.println("Invalid building.");
+                System.out.println("Gedung tidak valid.");
                 return;
         }
         List<String> availableRooms = hospitalTrie.listAvailableRooms(building.substring(0, 1), maxFloors);
         if (availableRooms.isEmpty()) {
-            System.out.println("No rooms are available.");
+            System.out.println("Tidak ada kamar yang tersedia.");
         } else {
-            System.out.println("Available rooms:");
+            System.out.println("Kamar yang tersedia:");
             for (String availableRoom : availableRooms) {
                 System.out.println(availableRoom);
             }
@@ -325,50 +325,50 @@ public class HospitalManagementSystem {
         HospitalManagementSystem system = new HospitalManagementSystem();
 
         while (true) {
-            System.out.println("\n1. Admit Patient");
-            System.out.println("2. Discharge Patient");
-            System.out.println("3. Check Room Occupancy");
-            System.out.println("4. List Occupied Rooms");
-            System.out.println("5. Print Trie");
-            System.out.println("6. List Available Rooms");
-            System.out.println("7. Exit");
-            System.out.print("Choose an option: ");
+            System.out.println("\n1. Daftarkan Pasien");
+            System.out.println("2. Keluarkan Pasien");
+            System.out.println("3. Periksa Ketersediaan Ruangan");
+            System.out.println("4. Daftar Ruangan yang Ditempati");
+            System.out.println("5. Cetak Trie");
+            System.out.println("6. Daftar Ruangan yang Tersedia");
+            System.out.println("7. Keluar");
+            System.out.print("Pilih opsi: ");
             int option = scanner.nextInt();
             scanner.nextLine();  // Consume newline
 
             switch (option) {
                 case 1:
-                    System.out.print("Enter patient name: ");
+                    System.out.print("Masukkan nama pasien: ");
                     String patientName = scanner.nextLine();
-                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     String building = scanner.nextLine();
                     String room = "";  // room will be entered based on building type
                     system.admitPatient(building, room, patientName, scanner);
                     break;
                 case 2:
-                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     building = scanner.nextLine();
-                    System.out.print("Enter room number: ");
+                    System.out.print("Masukkan nomor kamar: ");
                     room = scanner.nextLine();
                     system.dischargePatient(building, room);
                     break;
                 case 3:
-                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     building = scanner.nextLine();
-                    System.out.print("Enter room number: ");
+                    System.out.print("Masukkan nomor kamar: ");
                     room = scanner.nextLine();
                     if (system.isOccupied(building, room)) {
-                        System.out.println("The room is occupied.");
+                        System.out.println("Kamar sudah ditempati.");
                     } else {
-                        System.out.println("The room is available.");
+                        System.out.println("Kamar tersedia.");
                     }
                     break;
                 case 4:
                     List<String> occupiedRooms = system.listOccupiedRooms();
                     if (occupiedRooms.isEmpty()) {
-                        System.out.println("No rooms are occupied.");
+                        System.out.println("Tidak ada ruangan yang ditempati.");
                     } else {
-                        System.out.println("Occupied rooms:");
+                        System.out.println("Ruangan yang ditempati:");
                         for (String occupiedRoom : occupiedRooms) {
                             System.out.println(occupiedRoom);
                         }
@@ -378,16 +378,16 @@ public class HospitalManagementSystem {
                     system.printTrie();
                     break;
                 case 6:
-                    System.out.print("Enter building (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     building = scanner.nextLine();
                     system.listAvailableRooms(building);
                     break;
                 case 7:
-                    System.out.println("Exiting...");
+                    System.out.println("Keluar...");
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println("Opsi tidak valid. Silakan coba lagi.");
                     break;
             }
         }
