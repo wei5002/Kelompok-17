@@ -171,11 +171,11 @@ public class HospitalManagementSystem {
         boolean validInput = false;
 
         System.out.println("Tipe kamar untuk gedung " + building + ":");
-        System.out.println("1. ICU");
-        System.out.println("2. BPJS");
-        System.out.println("3. Normal");
-        System.out.println("4. VIP");
-        System.out.println("5. VVIP");
+        System.out.println("1. ICU\t\t\t\t\tRp 2.000.000,00\t\t/malam");
+        System.out.println("2. BPJS\t\t\t\t\tRp 0,00\t\t\t/malam");
+        System.out.println("3. Normal\t\t\t\tRp 1.500.000,00\t\t/malam");
+        System.out.println("4. VIP\t\t\t\t\tRp 15.000.000,00\t/malam");
+        System.out.println("5. VVIP\t\t\t\t\tRp 20.000.000,00\t/malam");
         while (!validInput) {
             System.out.print("Pilih tipe kamar (1-5): ");
             if (scanner.hasNextInt()) {
