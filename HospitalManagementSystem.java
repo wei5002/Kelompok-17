@@ -1,17 +1,22 @@
-import java.util.ArrayList;
+// dibawah ini mengimport data data yang di perlukan dalam program ini 
+import java.util.ArrayList; 
 import java.util.List;
 import java.util.Scanner;
 
+// class HospitalManagementSystem ini merupakan deklarasi class utama pada program ini, dan class ini menyimpan semua codenya
 public class HospitalManagementSystem {
 
-    private static final int R = 256; // extended ASCII
-    private static final int MAX_FLOORS_RUMAHSAKIT = 5;
-    private static final int ROOMS_PER_FLOOR = 10;
+    // di bawah ini merupakan statis (hanya dapat digunakan oleh class itu saja) yang di deklarasikan di dalam class HospitalManagementSystem
+    private static final int R = 256;                   // R = ukuran alfabed yang digunakan untuk TrieNode 
+    private static final int MAX_FLOORS_RUMAHSAKIT = 5; // MAX_FLOORS_RUMAHSAKIT = konstanta yang menentukan maksimum lantai di rumah sakit
+    private static final int ROOMS_PER_FLOOR = 10;      // ROOMS_PER_FLOOR = konstanta yang menentukan maksumum jumlah kamar per lantai 
 
+    // ini adalah class TrieNode yang digunakan untuk menginisialisasi anak dalam trie
     private class TrieNode {
-        boolean isOccupied;
-        String patientName;
-        TrieNode[] children;
+        // atribut yang digunakan dari kelas TrieNode
+        boolean isOccupied;     // menunjukan apakah tempat ini di tempati atau tidak
+        String patientName;     // menyimpan nama pasien jika tempat ini di tempati
+        TrieNode[] children;    // meninisialisasi array node dengan ukuran R (ASCII) 
 
         public TrieNode() {
             isOccupied = false;
@@ -20,29 +25,38 @@ public class HospitalManagementSystem {
         }
     }
 
-    private class HospitalTrie {
+     private class HospitalTrie {
         private TrieNode root;
 
+        // di bawah ini merupakan konstruktor untuk class HospitalTrie. 
+        // ketika sebuah objek HospitalTrie dibuat, akan menginisialkan root baru untuk trie 
         public HospitalTrie() {
             root = new TrieNode();
         }
 
+        // di bawah ini merupakan method yang digunakan untuk mendaftarkan pasien ke dalam kamar di dalam rumah sakit
+        // dia mengambil beberapa parameter seperti gedung, nomor kamar, nama psien, limitlantai(apakah melewati batas lantai, dan maksimal lantai)  
         public void admitPatient(String building, String room, String patientName, boolean limitFloors, int maxFloors) {
+            // code fullRoom digunakan untuk menggabungkan nama gedung dengan nomor kamar untuk membentuk nomor kamar pasien secara lengkap atau full
             String fullRoom = building + room;
-            if (limitFloors && !isValidRoom(room, maxFloors)) {
+            if (limitFloors && !isValidRoom(room, maxFloors)) { // line ini digunakan untuk memeriksa apakah pembatasan jumlah lantai dan jika nomor kamar yang dimasukan sesuai dengan jumlah maksimum lantai
                 System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
                 return;
             }
 
+            // currett digunakan untuk melacak inisial trie 
             TrieNode current = root;
+            // for code ini untuk menjalankan loop sebanyak panjang nomor kamar lengkap untuk memasukkan setiap karakter ke dalam trie 
             for (int i = 0, L = fullRoom.length(); i < L; i++) {
+                // code di bawah digunakan untuk mengonversi karakter di posisi tertentu dari nomor kamar lengkap menjadi nilai ASCII
+                // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
-                if (current.children[id] == null) {
+                if (current.children[id] == null) { // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. jika tidak, maka membuat inisial baru 
                     current.children[id] = new TrieNode();
                 }
                 current = current.children[id];
             }
-            if (!current.isOccupied) {
+            if (!current.isOccupied) { // memeriksa kamar yang di pilih apakah sudah di tempati belum. jika belum, maka pasien dapat ditempatkan di ruangan yang ia pilih
                 current.isOccupied = true;
                 current.patientName = patientName;
                 System.out.println(patientName + " telah diterima di kamar " + room + " di gedung " + building + ".");
@@ -51,6 +65,7 @@ public class HospitalManagementSystem {
             }
         }
 
+        //
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room;
             if (limitFloors && !isValidRoom(room, maxFloors)) {
