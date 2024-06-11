@@ -160,45 +160,56 @@ public class HospitalManagementSystem {
                     }
                 }
             }
-            if (lastChild != null) {
+            if (lastChild != null) { // memeriksa apakah children terakhir dari inisial saat ini ada 
+                // jika ada, maka informasi tentang children terakhir tersebut di cetak dengan menandai bahwa itu adalah anak terakhir
                 print(prefix + (isRoot ? "" : (isTail ? "    " : "│   ")), lastChild, lastChildId, true, false);
             }
         }
 
+        // metode di bawah ini untuk memeriksa nomor kamar yang di masukan oleh pengguna valid tidak
         private boolean isValidRoom(String room, int maxFloors) {
-            if (room == null || room.length() != 4) return false;
-            try {
+            if (room == null || room.length() != 4) return false; // jika nomor kamar null atau panjang tidak sama dengan 4yang di harapkan, maka akan mengembalikan metode false
+            try { // metode di bawah ini digunakan untuk mengonversi bagian nomor lantai dann nomor kamar dari string ke integer.  
+                // dengan memotong string nomor kamar dan menggunakan Integer.parseInt() untuk mengonversi ke integer
                 int floorNumber = Integer.parseInt(room.substring(0, 1));
                 int roomNumber = Integer.parseInt(room.substring(1));
+                // jika nomor lantai berada di antara 1 dan maxFloors, dan nomor kamarnya sesuai, maka nomor kamar dianggap valid dan mengembalikan true pada methodnya 
                 return floorNumber > 0 && floorNumber <= maxFloors && roomNumber >= 0 && roomNumber < ROOMS_PER_FLOOR;
-            } catch (NumberFormatException e) {
-                return false;
+            } catch (NumberFormatException e) { // jika terdapat kesalahan maka metode ini akan mengembalikan methodenya sebagai false, atau nomor kamr tidak valid
+                return false; 
             }
         }
 
+        // metode ini digunakan untuk mencari dan menampilkan daftar kamar yang tersedia dalam gedung yang di pilih
         public List<String> listAvailableRooms(String building, int maxFloors) {
-            List<String> availableRooms = new ArrayList<>();
-            for (int floor = 1; floor <= maxFloors; floor++) {
-                for (int room = 0; room < ROOMS_PER_FLOOR; room++) {
+            List<String> availableRooms = new ArrayList<>();    // ArrayList digunakan untuk menyimpan kamar yang tersedia 
+            for (int floor = 1; floor <= maxFloors; floor++) {  // looping dilakukan untuk setiap lantai dalam gedung, mulai dari lantai 1 hingga 'maxFloors'
+                for (int room = 0; room < ROOMS_PER_FLOOR; room++) { // untuk setiap nomor kamar dalam lantai, mulai dari 0 hingga ROOMS_PER_FLOOR -1
+                    // di bawah = nomor kamar dibentuk dengan menggunakan String.format() untuk memastikan bahwa nomor kamar memiliki panjang 4 digit dengan leading 0 jika perlu
                     String roomString = String.format("%d%03d", floor, room);
-                    if (!isOccupied(building, roomString)) {
-                        availableRooms.add(building + roomString);
+                    if (!isOccupied(building, roomString)) { // jika kamar tidak di tempati, maka kamar tersebut ditambahkan ke daftar kamar yang tersedia
+                        availableRooms.add(building + roomString); // nomor gedung dan nomor kamar digabungkan dan ditambahkan ke daftar kamar yang tersedia
                     }
                 }
-            }
-            return availableRooms;
+            } 
+            return availableRooms; // daftar kamar yang tersedia dikembalikan untuk digunakan atau di teampilkan kepada pengguna
         }
     }
 
+    // deklarasi variabel hospitalTrie yang merupakan instance dari kelas HospitalTrie
+    // digunakan untuk mengelola informasi tentang kamar di rumah sakit 
     private HospitalTrie hospitalTrie;
 
+    // konstruktor untuk kelas HospitalManagementSystem yang menginisialisasi variabel 'hospitalTrie' dengan membuat instance baru dari kelas 'HospitalTrie'
     public HospitalManagementSystem() {
         hospitalTrie = new HospitalTrie();
     }
 
+    // metode ini untuk mendaftarkan pasien ke dalam rumah sakit
+    // mengambil input dari pengguna seperti nama pasien, gedung, dan nomor kamar
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
         int roomType = -1;
-        boolean validInput = false;
+        boolean validInput = false; // inisialisasi variabel untuk menyimpan tipe kamar dan status validasi input dari pengguna
 
         System.out.println("Tipe kamar untuk gedung " + building + ":");
         System.out.println("1. ICU\t\t\t\t\tRp 2.000.000,00\t\t/malam");
@@ -206,6 +217,7 @@ public class HospitalManagementSystem {
         System.out.println("3. Normal\t\t\t\tRp 1.500.000,00\t\t/malam");
         System.out.println("4. VIP\t\t\t\t\tRp 15.000.000,00\t/malam");
         System.out.println("5. VVIP\t\t\t\t\tRp 20.000.000,00\t/malam");
+        // mengambil input dari pengguna untuk memilih tipe kamar. melakukan validasi input untuk memastikan input adalah angka 1-5
         while (!validInput) {
             System.out.print("Pilih tipe kamar (1-5): ");
             if (scanner.hasNextInt()) {
@@ -220,14 +232,15 @@ public class HospitalManagementSystem {
                 scanner.next();  // Consume invalid input
             }
         }
+
         scanner.nextLine();  // Consume newline
         System.out.print("Masukkan nomor kamar (000-009): ");
-        room = scanner.nextLine();
-        if (!isValidRoomNumber(room)) {
+        room = scanner.nextLine(); // meminta pengguna untuk memasukkan nomor kamar setelah memilih tipe kamar
+        if (!isValidRoomNumber(room)) { // memeriksa apakah nomor kamar yang dimasukkan oleh pengguna valid, yaitu antara 000-009
             System.out.println("Nomor kamar tidak valid. Silakan masukkan angka antara 000 dan 009.");
-            return;
+            return; 
         }
-        switch (roomType) {
+        switch (roomType) { // menggabungkan nomor lantai dengan nomor kamar berdasarkan tipe kamar yang dipilih oleh pengguna
             case 1:
                 room = "1" + room; // ICU on the 1st floor
                 break;
@@ -245,10 +258,12 @@ public class HospitalManagementSystem {
                 break;
         }
 
-        switch (building) {
+        switch (building) { // memilih jenis gedung yang di inginkan 
             case "THT":
+                // memanggil metode admitPatient dari objek hospitalTrie untuk mrndaftarkan pasien ke dalam rumah sakit.
+                // yang diberikan mencakupi jenis gedung (dalam format yang di harapkan), nomor kamar, nama pasien, serta mengikuti aturan (valid)  
                 hospitalTrie.admitPatient("T", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
-                break;
+                break; 
 
             case "Cardiology":
                 hospitalTrie.admitPatient("C", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
@@ -266,15 +281,16 @@ public class HospitalManagementSystem {
                 hospitalTrie.admitPatient("L", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            default:
+            default: // jika nama gedung tidak ada atau tidak valid
                 System.out.println("Gedung tidak valid.");
                 break;
         }
     }
 
+    // metode ini untuk memghapus atau membuang kamar yang sudah di tempati dan dapat di tempati lagi oleh pasien baru 
     public void dischargePatient(String building, String room) {
         switch (building) {
-            case "THT":
+            case "THT": // memanggil metode 'dischargePatient' dari objek 'hospitalTrie' untuk membuang pasien dri kamar di gedung yang sesuai 
                 hospitalTrie.dischargePatient("T", room, false, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
@@ -294,27 +310,35 @@ public class HospitalManagementSystem {
                 hospitalTrie.dischargePatient("L", room, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            default:
+            default: // jika nama gedung yang di masukan tidak valid atau tidak sesuai petunjuk
                 System.out.println("Gedung tidak valid.");
                 break;
         }
     }
 
+    // metode ini untuk memeriksa apakah sebuah kamar digedung rumah sakit tertentu sudah  di tempati atau belulm
+    // memeriksa status kamar menggunakan isOccupied dari objek hospitalTrie
     public boolean isOccupied(String building, String room) {
         return hospitalTrie.isOccupied(building.substring(0, 1), room);
     }
 
+    // metode ini untuk mendapatkan daftar kamar yang sudah di tempati di seluruh gedung rumah sakit
+    // menggunakann metode listOccupiedRooms dari objek hospitalTrie 
     public List<String> listOccupiedRooms() {
         return hospitalTrie.listOccupiedRooms();
     }
 
+    // metode ini untuk mencetak struktur trie yang menyimpan informasi kamar di rumah sakit.
+    // dengan menggunakan metode print dari objek hospitalTrie
     public void printTrie() {
         hospitalTrie.print();
     }
 
+    // metode ini untuk mencetak daftar kamar yang tersedia di sebuah gedung rumah sakit.
+    // mengambil nama gedung sebagai parameter
     public void listAvailableRooms(String building) {
         int maxFloors = 0;
-        switch (building) {
+        switch (building) { // mengatur jumlah maksimum lantai sesuai dnegan nama gedung yang dimasukkan. 
             case "THT":
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
@@ -335,12 +359,14 @@ public class HospitalManagementSystem {
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
 
-            default:
+            default: // jika nama gedung tidak vaild
                 System.out.println("Gedung tidak valid.");
                 return;
         }
+        // mendapatkan daftar kamar yang tersedia di gedung tersebut menggunakan metode listOccupiedRooms dari objek hospitalTrie
+        // nama gedung diubah menjadi format yang di harapkan di metode tersebut 
         List<String> availableRooms = hospitalTrie.listAvailableRooms(building.substring(0, 1), maxFloors);
-        if (availableRooms.isEmpty()) {
+        if (availableRooms.isEmpty()) { //memeriksa apakah ada kamar yang tersedia di gedung tersebut.
             System.out.println("Tidak ada kamar yang tersedia.");
         } else {
             System.out.println("Kamar yang tersedia:");
@@ -350,11 +376,12 @@ public class HospitalManagementSystem {
         }
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        HospitalManagementSystem system = new HospitalManagementSystem();
 
-        while (true) {
+    public static void main(String[] args) { // metode utama atau main pada program
+        Scanner scanner = new Scanner(System.in); // scanner untuk menerima input 
+        HospitalManagementSystem system = new HospitalManagementSystem(); // untuk menjalankan operasi pada sistem manajemen rumah sakit
+
+        while (true) { // melakukan loop tak terbatas untuk menjalankan program secara terus menerus hingga pengguna memilih keluar
             System.out.println("\n1. Daftarkan Pasien");
             System.out.println("2. Keluarkan Pasien");
             System.out.println("3. Periksa Ketersediaan Ruangan");
@@ -364,10 +391,10 @@ public class HospitalManagementSystem {
             System.out.println("7. Keluar");
             System.out.print("Pilih opsi: ");
             int option = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();  // meminta pengguna memasukan opsi apa yang mereka inginkan
 
-            switch (option) {
-                case 1:
+            switch (option) { // proses pilihan yang di pilih oleh pengguna 
+                case 1: // sebagai pendaftaran pada pasien
                     System.out.print("Masukkan nama pasien: ");
                     String patientName = scanner.nextLine();
                     System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
@@ -375,14 +402,14 @@ public class HospitalManagementSystem {
                     String room = "";  // room will be entered based on building type
                     system.admitPatient(building, room, patientName, scanner);
                     break;
-                case 2:
+                case 2: // jika ingin mengeluarkan pasien 
                     System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     building = scanner.nextLine();
                     System.out.print("Masukkan nomor kamar: ");
                     room = scanner.nextLine();
                     system.dischargePatient(building, room);
                     break;
-                case 3:
+                case 3: // jika ingin mengkonfirmasi kepada pasien, kamar yang mereka pilih apakah sudah di tempati
                     System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     building = scanner.nextLine();
                     System.out.print("Masukkan nomor kamar: ");
@@ -393,7 +420,7 @@ public class HospitalManagementSystem {
                         System.out.println("Kamar tersedia.");
                     }
                     break;
-                case 4:
+                case 4: // jika ingin melihat list kamar yang sudah di tempati seluruhnya dalam rumah sakit 
                     List<String> occupiedRooms = system.listOccupiedRooms();
                     if (occupiedRooms.isEmpty()) {
                         System.out.println("Tidak ada ruangan yang ditempati.");
@@ -404,26 +431,27 @@ public class HospitalManagementSystem {
                         }
                     }
                     break;
-                case 5:
+                case 5: // jika ingin melihat tampilan trie
                     system.printTrie();
                     break;
-                case 6:
+                case 6: // jika ingin melihat ruangan mana saja yang masih kosong dengan memasukkan nama gedung maka akan menampilakn semua kamar yang belum di tempati
                     System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
                     building = scanner.nextLine();
                     system.listAvailableRooms(building);
                     break;
-                case 7:
+                case 7: // keluar dari program 
                     System.out.println("Keluar...");
                     scanner.close();
                     return;
-                default:
+                default: // tidak valid
                     System.out.println("Opsi tidak valid. Silakan coba lagi.");
                     break;
             }
         }
     }
 
+    // metode yang memeriksa apakah nomor kamar yang di berikan sesuai dengan pola yang diinginkan yaitu 000-009
     private static boolean isValidRoomNumber(String room) {
-        return room.matches("00[0-9]");
+        return room.matches("00[0-9]"); // jika karakter pertama bukan 00 maka akan invalid, dan karakter terakhir bukan angka maka akan invalid juga 
     }
 }
