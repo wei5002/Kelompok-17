@@ -259,25 +259,25 @@ public class HospitalManagementSystem {
         }
 
         switch (building) { // memilih jenis gedung yang di inginkan 
-            case "THT":
+            case "1":
                 // memanggil metode admitPatient dari objek hospitalTrie untuk mrndaftarkan pasien ke dalam rumah sakit.
                 // yang diberikan mencakupi jenis gedung (dalam format yang di harapkan), nomor kamar, nama pasien, serta mengikuti aturan (valid)  
                 hospitalTrie.admitPatient("T", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break; 
 
-            case "Cardiology":
+            case "2":
                 hospitalTrie.admitPatient("C", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            case "Orthopedi":
+            case "3":
                 hospitalTrie.admitPatient("O", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            case "Mental":
+            case "4":
                 hospitalTrie.admitPatient("M", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            case "Labor":
+            case "5":
                 hospitalTrie.admitPatient("L", room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
@@ -290,23 +290,23 @@ public class HospitalManagementSystem {
     // metode ini untuk memghapus atau membuang kamar yang sudah di tempati dan dapat di tempati lagi oleh pasien baru 
     public void dischargePatient(String building, String room) {
         switch (building) {
-            case "THT": // memanggil metode 'dischargePatient' dari objek 'hospitalTrie' untuk membuang pasien dri kamar di gedung yang sesuai 
+            case "1": // memanggil metode 'dischargePatient' dari objek 'hospitalTrie' untuk membuang pasien dri kamar di gedung yang sesuai 
                 hospitalTrie.dischargePatient("T", room, false, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            case "Cardiology":
+            case "2":
                 hospitalTrie.dischargePatient("C", room, false, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            case "Orthopedi":
+            case "3":
                 hospitalTrie.dischargePatient("O", room, false, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            case "Mental":
+            case "4":
                 hospitalTrie.dischargePatient("M", room, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
-            case "Labor":
+            case "5":
                 hospitalTrie.dischargePatient("L", room, true, MAX_FLOORS_RUMAHSAKIT);
                 break;
 
@@ -339,23 +339,23 @@ public class HospitalManagementSystem {
     public void listAvailableRooms(String building) {
         int maxFloors = 0;
         switch (building) { // mengatur jumlah maksimum lantai sesuai dnegan nama gedung yang dimasukkan. 
-            case "THT":
+            case "1":
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
 
-            case "Cardiology":
+            case "2":
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
 
-            case "Orthopedi":
+            case "3":
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
 
-            case "Mental":
+            case "4":
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
 
-            case "Labor":
+            case "5":
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
 
@@ -397,20 +397,38 @@ public class HospitalManagementSystem {
                 case 1: // sebagai pendaftaran pada pasien
                     System.out.print("Masukkan nama pasien: ");
                     String patientName = scanner.nextLine();
-                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.println("Masukkan gedung ! ");
+                    System.out.println("1. THT");
+                    System.out.println("2. Cardiology");
+                    System.out.println("3. Orthopedi");
+                    System.out.println("4. Mental");
+                    System.out.println("5. Labor");
+                    System.out.println("Pilih nomor jenis gedung yang diinginkan (1-5): ");
                     String building = scanner.nextLine();
                     String room = "";  // room will be entered based on building type
                     system.admitPatient(building, room, patientName, scanner);
                     break;
                 case 2: // jika ingin mengeluarkan pasien 
-                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.println("Masukkan gedung ! ");
+                    System.out.println("1. THT");
+                    System.out.println("2. Cardiology");
+                    System.out.println("3. Orthopedi");
+                    System.out.println("4. Mental");
+                    System.out.println("5. Labor");
+                    System.out.println("Pilih nomor jenis gedung yang diinginkan (1-5): ");
                     building = scanner.nextLine();
                     System.out.print("Masukkan nomor kamar: ");
                     room = scanner.nextLine();
                     system.dischargePatient(building, room);
                     break;
                 case 3: // jika ingin mengkonfirmasi kepada pasien, kamar yang mereka pilih apakah sudah di tempati
-                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.println("Masukkan gedung ! ");
+                    System.out.println("1. THT");
+                    System.out.println("2. Cardiology");
+                    System.out.println("3. Orthopedi");
+                    System.out.println("4. Mental");
+                    System.out.println("5. Labor");
+                    System.out.println("Pilih nomor jenis gedung yang diinginkan (1-5): ");
                     building = scanner.nextLine();
                     System.out.print("Masukkan nomor kamar: ");
                     room = scanner.nextLine();
@@ -435,7 +453,13 @@ public class HospitalManagementSystem {
                     system.printTrie();
                     break;
                 case 6: // jika ingin melihat ruangan mana saja yang masih kosong dengan memasukkan nama gedung maka akan menampilakn semua kamar yang belum di tempati
-                    System.out.print("Masukkan gedung (THT, Cardiology, Orthopedi, Mental, Labor): ");
+                    System.out.println("Masukkan gedung ! ");
+                    System.out.println("1. THT");
+                    System.out.println("2. Cardiology");
+                    System.out.println("3. Orthopedi");
+                    System.out.println("4. Mental");
+                    System.out.println("5. Labor");
+                    System.out.println("Pilih nomor jenis gedung yang diinginkan (1-5): ");
                     building = scanner.nextLine();
                     system.listAvailableRooms(building);
                     break;
