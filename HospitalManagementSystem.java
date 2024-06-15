@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class HospitalManagementSystem {
 
     // di bawah ini merupakan statis (hanya dapat digunakan oleh class itu saja) yang di deklarasikan di dalam class HospitalManagementSystem
-    private static final int R = 256;                   // R = ukuran alfabed yang digunakan untuk TrieNode 
+    private static final int R = 256;                   // R = ukuran alphabeth yang digunakan untuk TrieNode 
     private static final int MAX_FLOORS_RUMAHSAKIT = 5; // MAX_FLOORS_RUMAHSAKIT = konstanta yang menentukan maksimum lantai di rumah sakit
     private static final int ROOMS_PER_FLOOR = 10;      // ROOMS_PER_FLOOR = konstanta yang menentukan maksumum jumlah kamar per lantai 
 
@@ -18,9 +18,9 @@ public class HospitalManagementSystem {
         String patientName;     // menyimpan nama pasien jika tempat ini di tempati
         TrieNode[] children;    // meninisialisasi array node dengan ukuran R (ASCII) 
 
-        public TrieNode() {
-            isOccupied = false;
-            patientName = "";
+        public TrieNode() {     //Konstruktor
+            isOccupied = false; //Pada pembuatan objek TrieNode pertama, nilai awal isOccupied = false
+            patientName = "";   //Default patientName adalah string kosong
             children = new TrieNode[R];
         }
     }
@@ -115,8 +115,8 @@ public class HospitalManagementSystem {
 
         // metod bantu rekursif untuk membuat daftar kamar
         public List<String> listOccupiedRooms() {
-            List<String> list = new ArrayList<>();
-            listRooms(root, "", list); //  
+            List<String> list = new ArrayList<>(); //deklrasi variabel list dengan tipe List yang berisi elemen bertipe string
+            listRooms(root, "", list);
             return list;
         }
 
@@ -212,7 +212,7 @@ public class HospitalManagementSystem {
         boolean validInput = false; // inisialisasi variabel untuk menyimpan tipe kamar dan status validasi input dari pengguna
 
         System.out.println("Tipe kamar untuk gedung " + building + ":");
-        System.out.println("1. ICU\t\t\t\t\tRp 2.000.000,00\t\t/malam");
+        System.out.println("1. ICU\t\t\t\t\tRp 2.000.000,00\t\t/malam"); //list harga kamar. \t untuk tab agar tampilan rapi
         System.out.println("2. BPJS\t\t\t\t\tRp 0,00\t\t\t/malam");
         System.out.println("3. Normal\t\t\t\tRp 1.500.000,00\t\t/malam");
         System.out.println("4. VIP\t\t\t\t\tRp 15.000.000,00\t/malam");
@@ -335,10 +335,10 @@ public class HospitalManagementSystem {
     }
 
     // metode ini untuk mencetak daftar kamar yang tersedia di sebuah gedung rumah sakit.
-    // mengambil nama gedung sebagai parameter
+    // mengambil nomor gedung sebagai parameter
     public void listAvailableRooms(String building) {
-        int maxFloors = 0;
-        switch (building) { // mengatur jumlah maksimum lantai sesuai dnegan nama gedung yang dimasukkan. 
+        int maxFloors = 0; //dimula dari 0, dan selanjutnya akan dipakai untuk menyimpan maksimum lamtai untuk gedung yang dipilih
+        switch (building) { // mengatur jumlah maksimum lantai sesuai dnegan nomor gedung yang dimasukkan. 
             case "1":
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
@@ -359,7 +359,7 @@ public class HospitalManagementSystem {
                 maxFloors = MAX_FLOORS_RUMAHSAKIT;
                 break;
 
-            default: // jika nama gedung tidak vaild
+            default: // jika nomor gedung tidak valid (bukan 1-5)
                 System.out.println("Gedung tidak valid.");
                 return;
         }
@@ -370,7 +370,7 @@ public class HospitalManagementSystem {
             System.out.println("Tidak ada kamar yang tersedia.");
         } else {
             System.out.println("Kamar yang tersedia:");
-            for (String availableRoom : availableRooms) {
+            for (String availableRoom : availableRooms) { //pada bagian ini adalah loop yang berjalan melalui setiap elemen pada availableRooms
                 System.out.println(availableRoom);
             }
         }
