@@ -208,7 +208,7 @@ public class HospitalManagementSystem {
     // metode ini untuk mendaftarkan pasien ke dalam rumah sakit
     // mengambil input dari pengguna seperti nama pasien, gedung, dan nomor kamar
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
-        int roomType = -1;
+        int roomType = -1; //dibuat -1 sebagai indikator bahwa tipe kamar belum dipilih
         boolean validInput = false; // inisialisasi variabel untuk menyimpan tipe kamar dan status validasi input dari pengguna
 
         System.out.println("Tipe kamar untuk gedung " + building + ":");
