@@ -337,26 +337,27 @@ public class HospitalManagementSystem {
     // metode ini untuk mencetak daftar kamar yang tersedia di sebuah gedung rumah sakit.
     // mengambil nomor gedung sebagai parameter
     public void listAvailableRooms(String building) {
-        int maxFloors = 0; //dimula dari 0, dan selanjutnya akan dipakai untuk menyimpan maksimum lamtai untuk gedung yang dipilih
+        String buildingPrefix = "";
+        int maxFloors = MAX_FLOORS_RUMAHSAKIT; //dimula dari 0, dan selanjutnya akan dipakai untuk menyimpan maksimum lamtai untuk gedung yang dipilih
         switch (building) { // mengatur jumlah maksimum lantai sesuai dnegan nomor gedung yang dimasukkan. 
             case "1":
-                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                buildingPrefix = "T";
                 break;
 
             case "2":
-                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                buildingPrefix = "C";
                 break;
 
             case "3":
-                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                buildingPrefix = "O";
                 break;
 
             case "4":
-                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                buildingPrefix = "M";
                 break;
 
             case "5":
-                maxFloors = MAX_FLOORS_RUMAHSAKIT;
+                buildingPrefix = "L";
                 break;
 
             default: // jika nomor gedung tidak valid (bukan 1-5)
@@ -365,7 +366,7 @@ public class HospitalManagementSystem {
         }
         // mendapatkan daftar kamar yang tersedia di gedung tersebut menggunakan metode listOccupiedRooms dari objek hospitalTrie
         // nama gedung diubah menjadi format yang di harapkan di metode tersebut 
-        List<String> availableRooms = hospitalTrie.listAvailableRooms(building.substring(0, 1), maxFloors);
+        List<String> availableRooms = hospitalTrie.listAvailableRooms(buildingPrefix, maxFloors);
         if (availableRooms.isEmpty()) { //memeriksa apakah ada kamar yang tersedia di gedung tersebut.
             System.out.println("Tidak ada kamar yang tersedia.");
         } else {
