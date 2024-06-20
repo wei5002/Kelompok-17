@@ -35,28 +35,31 @@ public class HospitalManagementSystem {
         }
 
         // di bawah ini merupakan method yang digunakan untuk mendaftarkan pasien ke dalam kamar di dalam rumah sakit
-        // dia mengambil beberapa parameter seperti gedung, nomor kamar, nama psien, limitlantai(apakah melewati batas lantai, dan maksimal lantai)  
+        // dia mengambil beberapa parameter seperti building, room, patientName, limitFloors, dan maxFloors  
         public void admitPatient(String building, String room, String patientName, boolean limitFloors, int maxFloors) {
-            // code fullRoom digunakan untuk menggabungkan nama gedung dengan nomor kamar untuk membentuk nomor kamar pasien secara lengkap atau full
+            // code fullRoom digunakan untuk melengkapi nomor kamar paseien dengan menggabungkan building dan room 
             String fullRoom = building + room;
-            if (limitFloors && !isValidRoom(room, maxFloors)) { // line ini digunakan untuk memeriksa apakah pembatasan jumlah lantai dan jika nomor kamar yang dimasukan sesuai dengan jumlah maksimum lantai
+            if (limitFloors && !isValidRoom(room, maxFloors)) { // line ini digunakan untuk memeriksa apakah lantai yang dimasukkan sudah sesuai 
+                                                                // dan nomor kamar yang dimasukan sesuai (000-009)
                 System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
                 return;
             }
 
             // currett digunakan untuk melacak inisial trie 
             TrieNode current = root;
-            // for code ini untuk menjalankan loop sebanyak panjang nomor kamar lengkap untuk memasukkan setiap karakter ke dalam trie 
+            // looping ini digunakan untuk menjalankan loop sebanyak panjang nomor kamar lengkap untuk memasukkan setiap karakter ke dalam trie 
             for (int i = 0, L = fullRoom.length(); i < L; i++) {
                 // code di bawah digunakan untuk mengonversi karakter di posisi tertentu dari nomor kamar lengkap menjadi nilai ASCII
                 // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
-                if (current.children[id] == null) { // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. jika tidak, maka membuat inisial baru 
+                if (current.children[id] == null) { // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. 
+                                                    // jika tidak, maka membuat inisial baru 
                     current.children[id] = new TrieNode();
                 }
-                current = current.children[id];
+                current = current.children[id]; // jika tienya sudah ada, maka trienya hanya memnambahan ID saja tidak membuat trie baru
             }
-            if (!current.isOccupied) { // memeriksa kamar yang di pilih apakah sudah di tempati belum. jika belum, maka pasien dapat ditempatkan di ruangan yang ia pilih
+            if (!current.isOccupied) {  // if code ini digunakan untuk memeriksa kamar yang di pilih apakah sudah di tempati belum. 
+                                        // jika belum, maka pasien dapat ditempatkan di ruangan yang ia pilih
                 current.isOccupied = true;
                 current.patientName = patientName;
                 System.out.println(patientName + " telah diterima di kamar " + room + " di gedung " + building + ".");
@@ -67,7 +70,7 @@ public class HospitalManagementSystem {
 
         // dischargePatient merupakan method untuk mengeluarkan atau melepaskan pasien dari kamar di rumah sakit yang mereka tempati sebelumnya
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
-            String fullRoom = building + room; // menggabungkan nama gedung dan nomor kamar 
+            String fullRoom = building + room; // menggabungkan  building dan room membuat nomor lengkap pada kakmar pasien 
             if (limitFloors && !isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
                 System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
                 return;
@@ -78,7 +81,8 @@ public class HospitalManagementSystem {
                 // code di bawah digunakan untuk mengonversi karakter di posisi tertentu dari nomor kamar lengkap menjadi nilai ASCII
                 // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
-                if (current.children[id] == null) { // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. jika tidak, maka membuat inisial baru 
+                if (current.children[id] == null) { // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. 
+                                                    // jika tidak, maka membuat inisial baru 
                     System.out.println("Kamar " + room + " di gedung " + building + " tidak ada.");
                     return;
                 }
@@ -105,7 +109,8 @@ public class HospitalManagementSystem {
                 // code di bawah digunakan untuk mengonversi karakter di posisi tertentu dari nomor kamar lengkap menjadi nilai ASCII
                 // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
-                if (current.children[id] == null) {  // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. jika tidak, maka membuat inisial baru 
+                if (current.children[id] == null) {  // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. 
+                                                    // jika tidak, maka membuat inisial baru 
                     return false;
                 }
                 current = current.children[id]; // digunakan untuk memeriksa kamar tertrntu di gedung tertentu sudah di tempati atau belum
@@ -206,7 +211,7 @@ public class HospitalManagementSystem {
     }
 
     // metode ini untuk mendaftarkan pasien ke dalam rumah sakit
-    // mengambil input dari pengguna seperti nama pasien, gedung, dan nomor kamar
+    // dengan mengambil input dari pengguna, seperti nama pasien, gedung, dan nomor kamar
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
         int roomType = -1; //dibuat -1 sebagai indikator bahwa tipe kamar belum dipilih
         boolean validInput = false; // inisialisasi variabel untuk menyimpan tipe kamar dan status validasi input dari pengguna
