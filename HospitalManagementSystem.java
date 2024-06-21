@@ -9,7 +9,7 @@ public class HospitalManagementSystem {
     // di bawah ini merupakan statis (hanya dapat digunakan oleh class itu saja) yang di deklarasikan di dalam class HospitalManagementSystem
     private static final int R = 256;                   // R = ukuran alphabeth yang digunakan untuk TrieNode 
     private static final int MAX_FLOORS_RUMAHSAKIT = 5; // MAX_FLOORS_RUMAHSAKIT = konstanta yang menentukan maksimum lantai di rumah sakit
-    private static final int ROOMS_PER_FLOOR = 10;      // ROOMS_PER_FLOOR = konstanta yang menentukan maksumum jumlah kamar per lantai 
+    private static final int ROOMS_PER_FLOOR = 450;      // ROOMS_PER_FLOOR = konstanta yang menentukan maksumum jumlah kamar per lantai 
 
     // ini adalah class TrieNode yang digunakan untuk menginisialisasi anak dalam trie
     private class TrieNode {
@@ -40,8 +40,8 @@ public class HospitalManagementSystem {
             // code fullRoom digunakan untuk melengkapi nomor kamar paseien dengan menggabungkan building dan room 
             String fullRoom = building + room;
             if (limitFloors && !isValidRoom(room, maxFloors)) { // line ini digunakan untuk memeriksa apakah lantai yang dimasukkan sudah sesuai 
-                                                                // dan nomor kamar yang dimasukan sesuai (000-009)
-                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
+                                                                // dan nomor kamar yang dimasukan sesuai (000-449)
+                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-449).");
                 return;
             }
 
@@ -72,7 +72,7 @@ public class HospitalManagementSystem {
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room; // menggabungkan  building dan room membuat nomor lengkap pada kakmar pasien 
             if (limitFloors && !isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
-                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-009).");
+                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-449).");
                 return;
             }
 
@@ -210,6 +210,8 @@ public class HospitalManagementSystem {
         hospitalTrie = new HospitalTrie();
     }
 
+     
+
     // metode ini untuk mendaftarkan pasien ke dalam rumah sakit
     // dengan mengambil input dari pengguna, seperti nama pasien, gedung, dan nomor kamar
     public void admitPatient(String building, String room, String patientName, Scanner scanner) {
@@ -239,12 +241,8 @@ public class HospitalManagementSystem {
         }
 
         scanner.nextLine();  // Consume newline
-        System.out.print("Masukkan nomor kamar (000-009): ");
+        System.out.print("Masukkan nomor kamar (000-449): ");
         room = scanner.nextLine(); // meminta pengguna untuk memasukkan nomor kamar setelah memilih tipe kamar
-        if (!isValidRoomNumber(room)) { // memeriksa apakah nomor kamar yang dimasukkan oleh pengguna valid, yaitu antara 000-009
-            System.out.println("Nomor kamar tidak valid. Silakan masukkan angka antara 000 dan 009.");
-            return; 
-        }
         switch (roomType) { // menggabungkan nomor lantai dengan nomor kamar berdasarkan tipe kamar yang dipilih oleh pengguna
             case 1:
                 room = "1" + room; // ICU on the 1st floor
@@ -386,6 +384,7 @@ public class HospitalManagementSystem {
     public static void main(String[] args) { // metode utama atau main pada program
         Scanner scanner = new Scanner(System.in); // scanner untuk menerima input 
         HospitalManagementSystem system = new HospitalManagementSystem(); // untuk menjalankan operasi pada sistem manajemen rumah sakit
+        // system.initializeData();
 
         while (true) { // melakukan loop tak terbatas untuk menjalankan program secara terus menerus hingga pengguna memilih keluar
             System.out.println("\n1. Daftarkan Pasien");
@@ -500,8 +499,4 @@ public class HospitalManagementSystem {
         }
     }
 
-    // metode yang memeriksa apakah nomor kamar yang di berikan sesuai dengan pola yang diinginkan yaitu 000-009
-    private static boolean isValidRoomNumber(String room) {
-        return room.matches("00[0-9]"); // jika karakter pertama bukan 00 maka akan invalid, dan karakter terakhir bukan angka maka akan invalid juga 
-    }
 }
