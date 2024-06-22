@@ -1,4 +1,7 @@
 // dibawah ini mengimport data data yang di perlukan dalam program ini 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList; 
 import java.util.List;
 import java.util.Scanner;
@@ -34,6 +37,8 @@ public class HospitalManagementSystem {
             root = new TrieNode();
         }
 
+
+        
         // di bawah ini merupakan method yang digunakan untuk mendaftarkan pasien ke dalam kamar di dalam rumah sakit
         // dia mengambil beberapa parameter seperti building, room, patientName, limitFloors, dan maxFloors  
         public void admitPatient(String building, String room, String patientName, boolean limitFloors, int maxFloors) {
@@ -199,6 +204,8 @@ public class HospitalManagementSystem {
             } 
             return availableRooms; // daftar kamar yang tersedia dikembalikan untuk digunakan atau di teampilkan kepada pengguna
         }
+
+
     }
 
     // deklarasi variabel hospitalTrie yang merupakan instance dari kelas HospitalTrie
@@ -210,7 +217,27 @@ public class HospitalManagementSystem {
         hospitalTrie = new HospitalTrie();
     }
 
-     
+    public void admitPatientsFromCSV(String csvFile) {
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(",");
+                if (columns.length != 3) {
+                    System.out.println("Invalid CSV format. Skipping line: " + line);
+                    continue;
+                }
+                String patientName = columns[2];
+                String building = columns[0];
+                String room = columns[1];
+
+                // Create a Scanner object or use a predefined one if needed
+                Scanner scanner = new Scanner(System.in); // or any appropriate input source
+                admitPatient(building, room, patientName, scanner);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading CSV file: " + e.getMessage());
+        }
+    }
 
     // metode ini untuk mendaftarkan pasien ke dalam rumah sakit
     // dengan mengambil input dari pengguna, seperti nama pasien, gedung, dan nomor kamar
@@ -289,6 +316,8 @@ public class HospitalManagementSystem {
                 break;
         }
     }
+
+
 
     // metode ini untuk memghapus atau membuang kamar yang sudah di tempati dan dapat di tempati lagi oleh pasien baru 
     public void dischargePatient(String building, String room) {
@@ -385,6 +414,7 @@ public class HospitalManagementSystem {
         Scanner scanner = new Scanner(System.in); // scanner untuk menerima input 
         HospitalManagementSystem system = new HospitalManagementSystem(); // untuk menjalankan operasi pada sistem manajemen rumah sakit
         // system.initializeData();
+        system.admitPatientsFromCSV("Book1.csv");
 
         while (true) { // melakukan loop tak terbatas untuk menjalankan program secara terus menerus hingga pengguna memilih keluar
             System.out.println("\n1. Daftarkan Pasien");
