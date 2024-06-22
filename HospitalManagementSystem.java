@@ -232,7 +232,7 @@ public class HospitalManagementSystem {
 
                 // Create a Scanner object or use a predefined one if needed
                 Scanner scanner = new Scanner(System.in); // or any appropriate input source
-                admitPatient(building, room, patientName, scanner);
+                hospitalTrie.admitPatient(building, room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
             }
         } catch (IOException e) {
             System.out.println("Error reading CSV file: " + e.getMessage());
