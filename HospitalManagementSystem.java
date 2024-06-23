@@ -218,24 +218,24 @@ public class HospitalManagementSystem {
     }
 
     public void admitPatientsFromCSV(String csvFile) {
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) { // Membuka file CSV menggunakan BufferedReader
             String line;
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split(",");
-                if (columns.length != 3) {
-                    System.out.println("Invalid CSV format. Skipping line: " + line);
+            while ((line = br.readLine()) != null) { // Membaca file baris per baris
+                String[] columns = line.split(","); // Memisahkan baris menjadi kolom berdasarkan koma
+                if (columns.length != 3) { // Mengecek apakah format CSV valid (harus ada 3 kolom)
+                    System.out.println("Invalid CSV format. Skipping line: " + line); // Jika tidak valid, cetak pesan dan lanjutkan ke baris berikutnya
                     continue;
                 }
-                String patientName = columns[2];
-                String building = columns[0];
-                String room = columns[1];
-
-                // Create a Scanner object or use a predefined one if needed
-                Scanner scanner = new Scanner(System.in); // or any appropriate input source
-                hospitalTrie.admitPatient(building, room, patientName, true, MAX_FLOORS_RUMAHSAKIT);
+                String patientName = columns[2]; // Mengambil nama pasien dari kolom ketiga
+                String building = columns[0]; // Mengambil nama gedung dari kolom pertama
+                String room = columns[1]; // Mengambil nomor kamar dari kolom kedua
+    
+                // Membuat objek Scanner atau menggunakan yang sudah didefinisikan sebelumnya jika diperlukan
+                Scanner scanner = new Scanner(System.in); // atau sumber input lain yang sesuai
+                hospitalTrie.admitPatient(building, room, patientName, true, MAX_FLOORS_RUMAHSAKIT); // Memasukkan pasien ke dalam hospitalTrie
             }
-        } catch (IOException e) {
-            System.out.println("Error reading CSV file: " + e.getMessage());
+        } catch (IOException e) { // Menangani kesalahan jika terjadi saat membaca file
+            System.out.println("Error reading CSV file: " + e.getMessage()); // Cetak pesan kesalahan jika terjadi IOException
         }
     }
 
@@ -260,7 +260,7 @@ public class HospitalManagementSystem {
                     validInput = true;
                 } else {
                     System.out.println("Tipe kamar tidak valid. Silakan masukkan angka antara 1 dan 5.");
-                }
+                }   
             } else {
                 System.out.println("Input tidak valid. Silakan masukkan angka.");
                 scanner.next();  // Consume invalid input
