@@ -87,11 +87,11 @@ public class HospitalManagementSystem {
                 // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
                 if (current.children[id] == null) { // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. 
-                                                    // jika tidak, maka membuat inisial baru 
+                                                    // jika tidak, maka akan mengeluarkan output seperti dibawah
                     System.out.println("Kamar " + room + " di gedung " + building + " tidak ada.");
                     return;
                 }
-                current = current.children[id];
+                current = current.children[id]; // jika iya, maka trienya akan tetap berada di dalam node trie 
             }
 
             if (current.isOccupied) { // memeriksa apakah kamar saat ini sedang ditempati atau tidak
