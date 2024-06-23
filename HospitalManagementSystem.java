@@ -166,7 +166,7 @@ public class HospitalManagementSystem {
                         isLastChild = false;    // jika anak terakhir belum di temuka, maka nilai isLastChild di atur ke false, karena inisial saat ini bukan children terakhir.
                         lastChild = root.children[i]; // jika children terakhir belum di temukan, maka variabel 'lastChild' diatur untuk menuyimpan refrensi ke children terakhir yang ditemukan
                         lastChildId = i;        // jika anak terakhir belum ditemukan, maka indeks children terakhir di perbarui
-                    } else {                    // jika children terakhir sudah ditemukan, maka angkah selanjutnya adalah mencetak informasi tentang childrens yang bukan anak terakhir
+                    } else {                    // jika children terakhir sudah ditemukan, maka langkah selanjutnya adalah mencetak informasi tentang childrens yang bukan anak terakhir
                         // di bawah ini adalah pemanggilan rekursif dalam mencetak informasi tentang childrenterakhir dari inisial saat ini
                         print(prefix + (isRoot ? "" : (isTail ? "    " : "│   ")), root.children[i], i, false, false);
                     }
