@@ -115,7 +115,7 @@ public class HospitalManagementSystem {
                 // dan digunakan sebagai indeks untuk array children pada inisial saat ini
                 int id = fullRoom.charAt(i);
                 if (current.children[id] == null) {  // memeriksa inisial children yang di hasilkan dari karakter saat ini telah dibuat atau belum. 
-                                                    // jika tidak, maka membuat inisial baru 
+                                                    // jika tidak, akan return ke false 
                     return false;
                 }
                 current = current.children[id]; // digunakan untuk memeriksa kamar tertrntu di gedung tertentu sudah di tempati atau belum
@@ -137,8 +137,10 @@ public class HospitalManagementSystem {
                 list.add(prefix + " (ditempati oleh " + current.patientName + ")"); // jika memenuhi syarat yang di atas, maka akan menambahkan ke dalam list 
             }
             for (int i = 0; i < R; i++) { // menjalankan ke semua inisial trie 
-                if (current.children[i] != null) { // memeriksa apakah ada children dengan indeks tertentu. jika ada, artinya ada kamar yang terhubung di bawah inisial saat ini
-                    listRooms(current.children[i], prefix + (char) i, list); // jika di atas true, rekursi dilakukan ke children inisial tersebut untuk melanjutkan pencarian kamar yang ditempati di bawahnya
+                if (current.children[i] != null) { // memeriksa apakah ada children dengan indeks tertentu. 
+                    // jika ada, artinya ada kamar yang terhubung di bawah inisial saat ini
+                    listRooms(current.children[i], prefix + (char) i, list); 
+                    // jika di atas true, rekursi dilakukan ke children inisial tersebut untuk melanjutkan pencarian kamar yang ditempati di bawahnya
                 }
             }
         }
