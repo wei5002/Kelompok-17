@@ -76,7 +76,7 @@ public class HospitalManagementSystem {
         // dischargePatient merupakan method untuk mengeluarkan atau melepaskan pasien dari kamar di rumah sakit yang mereka tempati sebelumnya
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room; // menggabungkan  building dan room membuat nomor lengkap pada kakmar pasien 
-            if (limitFloors && !isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
+            if (limitFloors || !isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
                 System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 450 kamar per lantai (000-449).");
                 return;
             }
