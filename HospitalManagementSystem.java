@@ -368,6 +368,11 @@ public class HospitalManagementSystem {
         hospitalTrie.print();
     }
 
+    // metode untuk mengecek apakah nama ruangan valid
+    public boolean isValidRoom(String room){
+        return hospitalTrie.isValidRoom(room, MAX_FLOORS_RUMAHSAKIT);
+    }
+
     // metode ini untuk mencetak daftar kamar yang tersedia di sebuah gedung rumah sakit.
     // mengambil nomor gedung sebagai parameter
     public void listAvailableRooms(String building) {
@@ -489,10 +494,14 @@ public class HospitalManagementSystem {
                     }
                     System.out.print("Masukkan nomor kamar: ");
                     room = scanner.nextLine();
-                    if (system.isOccupied(building, room)) {
-                        System.out.println("Kamar sudah ditempati.");
+                    if(!system.isValidRoom(room)){
+                        System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas 5 lantai, dengan 450 kamar per lantai (000-449)");
                     } else {
-                        System.out.println("Kamar tersedia.");
+                        if (system.isOccupied(building, room)) {
+                            System.out.println("Kamar sudah ditempati.");
+                        } else {
+                            System.out.println("Kamar tersedia.");
+                        }
                     }
                     break;
                 case 4: // jika ingin melihat list kamar yang sudah di tempati seluruhnya dalam rumah sakit 
