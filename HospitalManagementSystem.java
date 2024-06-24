@@ -472,25 +472,19 @@ public class HospitalManagementSystem {
                     System.out.println("5. Labor");
                     System.out.println("Pilih nomor jenis gedung yang diinginkan (1-5): ");
                     String buildingChoice = scanner.nextLine();
-                    switch (buildingChoice) {
-                        case "1":
-                            building = "THT";
-                            break;
-                        case "2":
-                            building = "Cardiology";
-                            break;
-                        case "3":
-                            building = "Orthopedi";
-                            break;
-                        case "4":
-                            building = "Mental";
-                            break;
-                        case "5":
-                            building = "Labor";
-                            break;
-                        default:
-                            System.out.println("Pilihan gedung tidak valid.");
-                            return;
+                    if(buildingChoice.equals("1")){
+                        building = "THT";
+                    }else if(buildingChoice.equals("2")){
+                        building = "Cardiology";
+                    }else if(buildingChoice.equals("3")){
+                        building = "Orthopedi";
+                    }else if(buildingChoice.equals("4")){
+                        building = "Mental";
+                    }else if(buildingChoice.equals("5")){
+                        building = "Labor";
+                    }else{
+                        System.out.println("Pilihan gedung tidak valid.");
+                        break;
                     }
                     System.out.print("Masukkan nomor kamar: ");
                     room = scanner.nextLine();
