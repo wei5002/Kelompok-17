@@ -74,9 +74,9 @@ public class HospitalManagementSystem {
         }
 
         // dischargePatient merupakan method untuk mengeluarkan atau melepaskan pasien dari kamar di rumah sakit yang mereka tempati sebelumnya
-        public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
+        public void dischargePatient(String building, String room,  int maxFloors) {
             String fullRoom = building + room; // menggabungkan  building dan room membuat nomor lengkap pada kakmar pasien 
-            if (limitFloors || !isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
+            if (!isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
                 System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 450 kamar per lantai (000-449).");
                 return;
             }
@@ -123,7 +123,7 @@ public class HospitalManagementSystem {
             return current.isOccupied; // mengembalikan nilai atribut isOccupied dari inisial yang mewakili kamar yang sedang dipertimbangkan
         }
 
-        // metod bantu rekursif untuk membuat daftar kamar
+        // method bantu rekursif untuk membuat daftar kamar
         public List<String> listOccupiedRooms() {
             List<String> list = new ArrayList<>(); //deklrasi variabel list dengan tipe List yang berisi elemen bertipe string
             listRooms(root, "", list);
@@ -325,23 +325,23 @@ public class HospitalManagementSystem {
     public void dischargePatient(String building, String room) {
         switch (building) {
             case "1": // memanggil metode 'dischargePatient' dari objek 'hospitalTrie' untuk membuang pasien dri kamar di gedung yang sesuai 
-                hospitalTrie.dischargePatient("T", room, false, MAX_FLOORS_RUMAHSAKIT);
+                hospitalTrie.dischargePatient("T", room,  MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "2":
-                hospitalTrie.dischargePatient("C", room, false, MAX_FLOORS_RUMAHSAKIT);
+                hospitalTrie.dischargePatient("C", room,  MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "3":
-                hospitalTrie.dischargePatient("O", room, false, MAX_FLOORS_RUMAHSAKIT);
+                hospitalTrie.dischargePatient("O", room,  MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "4":
-                hospitalTrie.dischargePatient("M", room, true, MAX_FLOORS_RUMAHSAKIT);
+                hospitalTrie.dischargePatient("M", room,  MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             case "5":
-                hospitalTrie.dischargePatient("L", room, true, MAX_FLOORS_RUMAHSAKIT);
+                hospitalTrie.dischargePatient("L", room,  MAX_FLOORS_RUMAHSAKIT);
                 break;
 
             default: // jika nama gedung yang di masukan tidak valid atau tidak sesuai petunjuk
