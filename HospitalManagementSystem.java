@@ -46,7 +46,7 @@ public class HospitalManagementSystem {
             String fullRoom = building + room;
             if (limitFloors && !isValidRoom(room, maxFloors)) { // line ini digunakan untuk memeriksa apakah lantai yang dimasukkan sudah sesuai 
                                                                 // dan nomor kamar yang dimasukan sesuai (000-449)
-                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-449).");
+                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 450 kamar per lantai (000-449).");
                 return;
             }
 
@@ -77,7 +77,7 @@ public class HospitalManagementSystem {
         public void dischargePatient(String building, String room, boolean limitFloors, int maxFloors) {
             String fullRoom = building + room; // menggabungkan  building dan room membuat nomor lengkap pada kakmar pasien 
             if (limitFloors && !isValidRoom(room, maxFloors)) { // untuk memeriksa kamarnya valid ga (ada jelasin di code atas sebelumnya)
-                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 10 kamar per lantai (000-449).");
+                System.out.println("Nomor ruangan tidak valid. Gedung memiliki batas " + maxFloors + " lantai dengan 450 kamar per lantai (000-449).");
                 return;
             }
 
